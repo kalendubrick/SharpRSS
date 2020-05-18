@@ -23,7 +23,7 @@ namespace SharpRSS.FeedParser.Models
         /// <summary>
         /// Gets or sets the URL to the corresponding website.
         /// </summary>
-        public string Link { get; set; }
+        public Uri Link { get; set; }
 
         /// <summary>
         /// Gets or sets the phrase or description describing the channel.
