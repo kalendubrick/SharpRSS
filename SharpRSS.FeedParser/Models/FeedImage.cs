@@ -38,12 +38,12 @@ namespace SharpRSS.FeedParser.Models
         /// <summary>
         /// Gets or sets the width of the image, in pixels.
         /// </summary>
-        public int Width { get; set; }
+        public int? Width { get; set; }
 
         /// <summary>
         /// Gets or sets the height of the image, in pixels.
         /// </summary>
-        public int Height { get; set; }
+        public int? Height { get; set; }
 
         /// <summary>
         /// Gets or sets the description for the image.
