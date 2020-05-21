@@ -27,8 +27,4 @@
     </PackageReference>
     <PackageReference Include="FluentValidation" Version="8.6.2" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Validators\" />
-  </ItemGroup>
 </Project>
