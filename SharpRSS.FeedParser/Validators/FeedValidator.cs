@@ -5,6 +5,8 @@
 
 namespace SharpRSS.FeedParser.Validators
 {
+    using System;
+
     using FluentValidation;
     using SharpRSS.FeedParser.Models;
 
@@ -19,7 +21,10 @@ namespace SharpRSS.FeedParser.Validators
         public FeedValidator()
         {
             this.RuleFor(feed => feed.Title).NotEmpty();
-            this.RuleFor(feed => feed.Link).NotNull();
+            this.RuleFor(feed => feed.Link).NotEmpty();
+            this.RuleFor(feed => feed.Link)
+                .Must(uri => Uri.TryCreate(uri, UriKind.Absolute, out _))
+                .When(feed => !string.IsNullOrWhiteSpace(feed.Link));
             this.RuleFor(feed => feed.Description).NotEmpty();
         }
     }

@@ -5,6 +5,8 @@
 
 namespace SharpRSS.FeedParser.Validators
 {
+    using System;
+
     using FluentValidation;
     using SharpRSS.FeedParser.Models;
 
@@ -18,11 +20,21 @@ namespace SharpRSS.FeedParser.Validators
         /// </summary>
         public FeedImageValidator()
         {
-            this.RuleFor(feedImage => feedImage.Url).NotNull();
+            this.RuleFor(feedImage => feedImage.Url).NotEmpty();
+            this.RuleFor(feedImage => feedImage.Url)
+                .Must(uri => Uri.TryCreate(uri, UriKind.Absolute, out _))
+                .When(feedImage => !string.IsNullOrWhiteSpace(feedImage.Url));
             this.RuleFor(feedImage => feedImage.Title).NotEmpty();
-            this.RuleFor(feedImage => feedImage.Link).NotNull();
-            this.RuleFor(feedImage => feedImage.Height).LessThanOrEqualTo(400);
-            this.RuleFor(feedImage => feedImage.Width).LessThanOrEqualTo(144);
+            this.RuleFor(feedImage => feedImage.Link).NotEmpty();
+            this.RuleFor(feedImage => feedImage.Link)
+                .Must(uri => Uri.TryCreate(uri, UriKind.Absolute, out _))
+                .When(feedImage => !string.IsNullOrWhiteSpace(feedImage.Link));
+            this.RuleFor(feedImage => feedImage.Height)
+                .LessThanOrEqualTo(400)
+                .When(feedImage => feedImage.Height.HasValue);
+            this.RuleFor(feedImage => feedImage.Width)
+                .LessThanOrEqualTo(144)
+                .When(feedImage => feedImage.Width.HasValue);
         }
     }
 }

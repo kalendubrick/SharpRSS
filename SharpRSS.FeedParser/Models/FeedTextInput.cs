@@ -32,6 +32,6 @@ namespace SharpRSS.FeedParser.Models
         /// Gets or sets the URL of the CGI script that
         /// processes text input requests.
         /// </summary>
-        public Uri Link { get; set; }
+        public string Link { get; set; }
     }
 }

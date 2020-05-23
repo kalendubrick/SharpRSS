@@ -21,6 +21,6 @@ namespace SharpRSS.FeedParser.Models
         /// Gets or sets the URL that links to the
         /// XMLizatoin of the source.
         /// </summary>
-        public Uri Url { get; set; }
+        public string Url { get; set; }
     }
 }

@@ -21,7 +21,7 @@ namespace SharpRSS.FeedParser.Models
         /// <summary>
         /// Gets or sets the URL of the item.
         /// </summary>
-        public Uri Link { get; set; }
+        public string Link { get; set; }
 
         /// <summary>
         /// Gets or sets the item synopsis.

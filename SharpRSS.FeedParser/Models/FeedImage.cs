@@ -17,7 +17,7 @@ namespace SharpRSS.FeedParser.Models
         /// <summary>
         /// Gets or sets the URL for the image.
         /// </summary>
-        public Uri Url { get; set; }
+        public string Url { get; set; }
 
         /// <summary>
         /// Gets or sets the title for the image.
@@ -29,7 +29,7 @@ namespace SharpRSS.FeedParser.Models
         /// Gets or sets the link for the image.
         /// Note: in practice, often the same value as <see cref="Feed.Link"/>.
         /// </summary>
-        public Uri Link { get; set; }
+        public string Link { get; set; }
 
         #endregion
 
