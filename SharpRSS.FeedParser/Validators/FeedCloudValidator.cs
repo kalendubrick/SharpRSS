@@ -20,8 +20,8 @@ namespace SharpRSS.FeedParser.Validators
         /// </summary>
         public FeedCloudValidator()
         {
-            this.RuleFor(feedCloud => feedCloud.Domain).NotEmpty();
             this.RuleFor(feedCloud => feedCloud.Domain)
+                .NotEmpty()
                 .Must(uri => Uri.TryCreate(uri, UriKind.Absolute, out _))
                 .When(feedCloud => !string.IsNullOrWhiteSpace(feedCloud.Domain));
             this.RuleFor(feedCloud => feedCloud.Port).InclusiveBetween(0, 65535);

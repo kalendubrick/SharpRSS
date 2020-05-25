@@ -23,8 +23,8 @@ namespace SharpRSS.FeedParser.Validators
             this.RuleFor(feedTextInput => feedTextInput.Title).NotEmpty();
             this.RuleFor(feedTextInput => feedTextInput.Description).NotEmpty();
             this.RuleFor(feedTextInput => feedTextInput.Name).NotEmpty();
-            this.RuleFor(feedTextInput => feedTextInput.Link).NotEmpty();
             this.RuleFor(feedTextInput => feedTextInput.Link)
+                .NotEmpty()
                 .Must(uri => Uri.TryCreate(uri, UriKind.Absolute, out _))
                 .When(feedTextInput => !string.IsNullOrWhiteSpace(feedTextInput.Link));
         }

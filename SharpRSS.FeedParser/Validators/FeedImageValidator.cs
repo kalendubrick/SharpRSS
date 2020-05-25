@@ -20,13 +20,13 @@ namespace SharpRSS.FeedParser.Validators
         /// </summary>
         public FeedImageValidator()
         {
-            this.RuleFor(feedImage => feedImage.Url).NotEmpty();
             this.RuleFor(feedImage => feedImage.Url)
+                .NotEmpty()
                 .Must(uri => Uri.TryCreate(uri, UriKind.Absolute, out _))
                 .When(feedImage => !string.IsNullOrWhiteSpace(feedImage.Url));
             this.RuleFor(feedImage => feedImage.Title).NotEmpty();
-            this.RuleFor(feedImage => feedImage.Link).NotEmpty();
             this.RuleFor(feedImage => feedImage.Link)
+                .NotEmpty()
                 .Must(uri => Uri.TryCreate(uri, UriKind.Absolute, out _))
                 .When(feedImage => !string.IsNullOrWhiteSpace(feedImage.Link));
             this.RuleFor(feedImage => feedImage.Height)

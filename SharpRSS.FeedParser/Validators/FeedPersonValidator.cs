@@ -19,7 +19,9 @@ namespace SharpRSS.FeedParser.Validators
         public FeedPersonValidator()
         {
             this.RuleFor(feedPerson => feedPerson.Name).NotEmpty();
-            this.RuleFor(feedPerson => feedPerson.EmailAddress).EmailAddress();
+            this.RuleFor(feedPerson => feedPerson.EmailAddress)
+                .NotEmpty()
+                .EmailAddress();
         }
     }
 }
