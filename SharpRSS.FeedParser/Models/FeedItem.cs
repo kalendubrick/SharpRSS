@@ -42,7 +42,7 @@ namespace SharpRSS.FeedParser.Models
         /// Gets or sets the URL of a page for
         /// comments related to the item.
         /// </summary>
-        public Uri Comments { get; set; }
+        public string Comments { get; set; }
 
         /// <summary>
         /// Gets or sets a media object that is
