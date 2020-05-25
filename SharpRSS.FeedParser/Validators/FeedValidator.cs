@@ -6,7 +6,7 @@
 namespace SharpRSS.FeedParser.Validators
 {
     using System;
-
+    using System.Linq;
     using FluentValidation;
     using SharpRSS.FeedParser.Models;
 
@@ -27,12 +27,16 @@ namespace SharpRSS.FeedParser.Validators
                 .Must(uri => Uri.TryCreate(uri, UriKind.Absolute, out _))
                 .When(feed => !string.IsNullOrWhiteSpace(feed.Link));
             this.RuleFor(feed => feed.Description).NotEmpty();
+            this.RuleForEach(feed => feed.Categories).NotEmpty();
+            this.RuleForEach(feed => feed.SkipHours).LessThanOrEqualTo(24);
+            this.RuleForEach(feed => feed.SkipDays).Matches("^(Sun|Mon|Tues|Wednes|Thurs|Fri|Satur)day$");
 
             // Validators from sub-elements
             this.RuleFor(feed => feed.Cloud).SetValidator(new FeedCloudValidator());
             this.RuleFor(feed => feed.Image).SetValidator(new FeedImageValidator());
             this.RuleFor(feed => feed.ManagingEditor).SetValidator(new FeedPersonValidator());
             this.RuleFor(feed => feed.TextInput).SetValidator(new FeedTextInputValidator());
+            this.RuleForEach(feed => feed.Items).SetValidator(new FeedItemValidator());
         }
     }
 }
