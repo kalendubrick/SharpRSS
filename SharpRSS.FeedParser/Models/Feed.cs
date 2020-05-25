@@ -124,6 +124,11 @@ namespace SharpRSS.FeedParser.Models
         /// </summary>
         public IList<string> SkipDays { get; }
 
+        /// <summary>
+        /// Gets the items in the feed.
+        /// </summary>
+        public IList<FeedItem> Items { get; }
+
         #endregion
     }
 }
