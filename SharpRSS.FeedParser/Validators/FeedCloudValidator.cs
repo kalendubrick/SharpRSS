@@ -22,8 +22,8 @@ namespace SharpRSS.FeedParser.Validators
         {
             this.RuleFor(feedCloud => feedCloud.Domain)
                 .NotEmpty()
-                .Must(uri => Uri.TryCreate(uri, UriKind.Absolute, out _))
-                .When(feedCloud => !string.IsNullOrWhiteSpace(feedCloud.Domain));
+                .Must(uri => Uri.IsWellFormedUriString(uri, UriKind.RelativeOrAbsolute))
+                .When(feedCloud => !string.IsNullOrWhiteSpace(feedCloud.Domain), ApplyConditionTo.CurrentValidator);
             this.RuleFor(feedCloud => feedCloud.Port).InclusiveBetween(0, 65535);
             this.RuleFor(feedCloud => feedCloud.Path).NotEmpty();
             this.RuleFor(feedCloud => feedCloud.RegisterProcedure).NotEmpty();
