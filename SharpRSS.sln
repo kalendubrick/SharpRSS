@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpRSS.WebClient", "SharpRSS.WebClient\SharpRSS.WebClient.csproj", "{16BB52A7-4C1C-46CF-ABA2-36AF925793E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpRSS.WebClient", "SharpRSS.WebClient\SharpRSS.WebClient.csproj", "{16BB52A7-4C1C-46CF-ABA2-36AF925793E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpRSS.FeedParser", "SharpRSS.FeedParser\SharpRSS.FeedParser.csproj", "{5DA5FAF2-CD30-4F3D-A822-7B7DE9AFB54F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpRSS.FeedParser", "SharpRSS.FeedParser\SharpRSS.FeedParser.csproj", "{5DA5FAF2-CD30-4F3D-A822-7B7DE9AFB54F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpRSS.FeedParser.Tests", "SharpRSS.FeedParser.Tests\SharpRSS.FeedParser.Tests.csproj", "{9F75CD88-BCD7-45F4-9E0A-DA18D3ED5257}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{5DA5FAF2-CD30-4F3D-A822-7B7DE9AFB54F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DA5FAF2-CD30-4F3D-A822-7B7DE9AFB54F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DA5FAF2-CD30-4F3D-A822-7B7DE9AFB54F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F75CD88-BCD7-45F4-9E0A-DA18D3ED5257}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F75CD88-BCD7-45F4-9E0A-DA18D3ED5257}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F75CD88-BCD7-45F4-9E0A-DA18D3ED5257}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F75CD88-BCD7-45F4-9E0A-DA18D3ED5257}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
