@@ -23,18 +23,22 @@ namespace SharpRSS.FeedParser.Validators
             this.RuleFor(feedImage => feedImage.Url)
                 .NotEmpty()
                 .Must(uri => Uri.TryCreate(uri, UriKind.Absolute, out _))
-                .When(feedImage => !string.IsNullOrWhiteSpace(feedImage.Url));
+                .When(feedImage => !string.IsNullOrWhiteSpace(feedImage.Url), ApplyConditionTo.CurrentValidator);
             this.RuleFor(feedImage => feedImage.Title).NotEmpty();
             this.RuleFor(feedImage => feedImage.Link)
                 .NotEmpty()
                 .Must(uri => Uri.TryCreate(uri, UriKind.Absolute, out _))
-                .When(feedImage => !string.IsNullOrWhiteSpace(feedImage.Link));
+                .When(feedImage => !string.IsNullOrWhiteSpace(feedImage.Link), ApplyConditionTo.CurrentValidator);
             this.RuleFor(feedImage => feedImage.Height)
+                .NotNull()
+                .When(feedImage => feedImage.Width.HasValue, ApplyConditionTo.CurrentValidator)
                 .LessThanOrEqualTo(400)
-                .When(feedImage => feedImage.Height.HasValue);
+                .When(feedImage => feedImage.Height.HasValue, ApplyConditionTo.CurrentValidator);
             this.RuleFor(feedImage => feedImage.Width)
+                .NotNull()
+                .When(feedImage => feedImage.Height.HasValue, ApplyConditionTo.CurrentValidator)
                 .LessThanOrEqualTo(144)
-                .When(feedImage => feedImage.Width.HasValue);
+                .When(feedImage => feedImage.Width.HasValue, ApplyConditionTo.CurrentValidator);
         }
     }
 }
