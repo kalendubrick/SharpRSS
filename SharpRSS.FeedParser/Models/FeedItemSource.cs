@@ -14,12 +14,13 @@ namespace SharpRSS.FeedParser.Models
     {
         /// <summary>
         /// Gets or sets the name of the source.
+        /// Should be derived from <see cref="Feed.Title"/>.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the URL that links to the
-        /// XMLizatoin of the source.
+        /// XMLization of the source.
         /// </summary>
         public string Url { get; set; }
     }
