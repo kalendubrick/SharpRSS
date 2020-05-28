@@ -21,8 +21,9 @@ namespace SharpRSS.FeedParser.Validators
         public FeedItemSourceValidator()
         {
             this.RuleFor(feedItemSource => feedItemSource.Url)
+                .NotEmpty()
                 .Must(uri => Uri.TryCreate(uri, UriKind.Absolute, out _))
-                .When(feedItemSource => !string.IsNullOrWhiteSpace(feedItemSource.Url));
+                .When(feedItemSource => !string.IsNullOrWhiteSpace(feedItemSource.Url), ApplyConditionTo.CurrentValidator);
         }
     }
 }
