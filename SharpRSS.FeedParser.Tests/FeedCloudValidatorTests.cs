@@ -33,7 +33,7 @@ namespace SharpRSS.FeedParser.Tests
         }
 
         [Test]
-        public void EmptyDomainShouldReturnValidatorError()
+        public void EmptyFeedCloudDomainShouldReturnValidatorError()
         {
             var feedCloud = new FeedCloud()
             {
@@ -50,7 +50,7 @@ namespace SharpRSS.FeedParser.Tests
         }
 
         [Test]
-        public void PortLessThanMinShouldReturnValidatorError()
+        public void FeedCloudPortLessThanMinShouldReturnValidatorError()
         {
             var feedCloud = new FeedCloud()
             {
@@ -67,7 +67,7 @@ namespace SharpRSS.FeedParser.Tests
         }
 
         [Test]
-        public void PortGreaterThanMaxShouldReturnValidatorError()
+        public void FeedCloudPortGreaterThanMaxShouldReturnValidatorError()
         {
             var feedCloud = new FeedCloud()
             {
@@ -84,7 +84,7 @@ namespace SharpRSS.FeedParser.Tests
         }
 
         [Test]
-        public void EmptyPathShouldReturnValidatorError()
+        public void EmptyFeedCloudPathShouldReturnValidatorError()
         {
             var feedCloud = new FeedCloud()
             {
@@ -101,7 +101,7 @@ namespace SharpRSS.FeedParser.Tests
         }
 
         [Test]
-        public void EmptyRegisterProcedureShouldReturnValidatorError()
+        public void EmptyFeedCloudRegisterProcedureShouldReturnValidatorError()
         {
             var feedCloud = new FeedCloud()
             {
@@ -118,7 +118,7 @@ namespace SharpRSS.FeedParser.Tests
         }
 
         [Test]
-        public void EmptyProtocolShouldReturnValidatorError()
+        public void EmptyFeedCloudProtocolShouldReturnValidatorError()
         {
             var feedCloud = new FeedCloud()
             {

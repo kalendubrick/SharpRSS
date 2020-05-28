@@ -52,7 +52,7 @@
         }
 
         [Test]
-        public void EmptyUrlShouldReturnValidatorError()
+        public void EmptyFeedImageUrlShouldReturnValidatorError()
         {
             var feedImage = new FeedImage()
             {
@@ -67,7 +67,7 @@
         }
 
         [Test]
-        public void InvalidUrlShouldReturnValidatorError()
+        public void InvalidFeedImageUrlShouldReturnValidatorError()
         {
             var feedImage = new FeedImage()
             {
@@ -82,7 +82,7 @@
         }
 
         [Test]
-        public void EmptyTitleShouldReturnValidatorError()
+        public void EmptyFeedImageTitleShouldReturnValidatorError()
         {
             var feedImage = new FeedImage()
             {
@@ -97,7 +97,7 @@
         }
 
         [Test]
-        public void EmptyLinkShouldReturnValidatorError()
+        public void EmptyFeedImageLinkShouldReturnValidatorError()
         {
             var feedImage = new FeedImage()
             {
@@ -112,7 +112,7 @@
         }
 
         [Test]
-        public void InvalidLinkShouldReturnValidatorError()
+        public void InvalidFeedImageLinkShouldReturnValidatorError()
         {
             var feedImage = new FeedImage()
             {
@@ -127,7 +127,7 @@
         }
 
         [Test]
-        public void NullWidthAndNonNullHeightShouldReturnValidatorError()
+        public void NullFeedImageWidthAndNonNullHeightShouldReturnValidatorError()
         {
             var feedImage = new FeedImage()
             {
@@ -144,7 +144,7 @@
         }
 
         [Test]
-        public void NullHeightAndNonNullWidthShouldReturnValidatorError()
+        public void NullFeedImageHeightAndNonNullWidthShouldReturnValidatorError()
         {
             var feedImage = new FeedImage()
             {
@@ -161,7 +161,7 @@
         }
 
         [Test]
-        public void WidthGreaterThanMaxShouldReturnValidatorError()
+        public void FeedImageWidthGreaterThanMaxShouldReturnValidatorError()
         {
             var feedImage = new FeedImage()
             {
@@ -178,7 +178,7 @@
         }
 
         [Test]
-        public void HeightGreaterThanMaxShouldReturnValidatorError()
+        public void FeedImageHeightGreaterThanMaxShouldReturnValidatorError()
         {
             var feedImage = new FeedImage()
             {
