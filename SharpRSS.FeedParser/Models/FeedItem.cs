@@ -36,7 +36,7 @@ namespace SharpRSS.FeedParser.Models
         /// <summary>
         /// Gets the categories the item is included in.
         /// </summary>
-        public IList<string> Categories { get; }
+        public IList<string> Categories { get; } = new List<string>();
 
         /// <summary>
         /// Gets or sets the URL of a page for
