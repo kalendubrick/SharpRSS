@@ -6,3 +6,4 @@
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Used in NUnit attribute", Scope = "member", Target = "~F:SharpRSS.FeedParser.Tests.FeedImageValidatorTests.validFeedImages")]
+[assembly: SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Used in NUnit attribute", Scope = "member", Target = "~F:SharpRSS.FeedParser.Tests.FeedItemValidatorTests.validFeedItems")]
