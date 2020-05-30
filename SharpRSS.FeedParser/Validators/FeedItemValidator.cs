@@ -28,14 +28,12 @@ namespace SharpRSS.FeedParser.Validators
                 .NotEmpty()
                 .When(feed => string.IsNullOrEmpty(feed.Title));
             this.RuleFor(feedItem => feedItem.Link)
-                .NotNull()
                 .Must(uri => Uri.TryCreate(uri, UriKind.Absolute, out _))
-                .When(feedItem => !string.IsNullOrWhiteSpace(feedItem.Link), ApplyConditionTo.CurrentValidator);
+                .When(feedItem => !string.IsNullOrWhiteSpace(feedItem.Link));
             this.RuleForEach(feedItem => feedItem.Categories).NotEmpty();
             this.RuleFor(feedItem => feedItem.Comments)
-                .NotNull()
                 .Must(uri => Uri.TryCreate(uri, UriKind.Absolute, out _))
-                .When(feedItem => !string.IsNullOrWhiteSpace(feedItem.Comments), ApplyConditionTo.CurrentValidator);
+                .When(feedItem => !string.IsNullOrWhiteSpace(feedItem.Comments));
 
             // Validators from sub-elements
             this.RuleFor(feedItem => feedItem.Author).SetValidator(new FeedPersonValidator());
