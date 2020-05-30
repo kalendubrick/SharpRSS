@@ -76,5 +76,45 @@
             result.ShouldNotHaveAnyValidationErrors();
         }
 
+        [Test]
+        public void EmptyTitleAndDescriptionShouldReturnValidatorError()
+        {
+            var feedItem = new FeedItem()
+            {
+                Link = "http://nytimes.com/2004/12/07FEST.html"
+            };
+
+            var result = validator.TestValidate(feedItem);
+
+            result.ShouldHaveAnyValidationError();
+        }
+
+        [Test]
+        public void NullLinkShouldReturnValidatorError()
+        {
+            var feedItem = new FeedItem()
+            {
+                Title = "Venice Film Festival Tries to Quit Sinking",
+                Link = null
+            };
+
+            var result = validator.TestValidate(feedItem);
+
+            result.ShouldHaveValidationErrorFor(feedItem => feedItem.Link);
+        }
+
+        [Test]
+        public void InvalidLinkShouldReturnValidatorError()
+        {
+            var feedItem = new FeedItem()
+            {
+                Title = "Venice Film Festival Tries to Quit Sinking",
+                Link = "nytimes/"
+            };
+
+            var result = validator.TestValidate(feedItem);
+
+            result.ShouldHaveValidationErrorFor(feedItem => feedItem.Link);
+        }
     }
 }
