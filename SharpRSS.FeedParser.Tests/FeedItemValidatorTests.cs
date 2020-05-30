@@ -90,20 +90,6 @@
         }
 
         [Test]
-        public void NullLinkShouldReturnValidatorError()
-        {
-            var feedItem = new FeedItem()
-            {
-                Title = "Venice Film Festival Tries to Quit Sinking",
-                Link = null
-            };
-
-            var result = validator.TestValidate(feedItem);
-
-            result.ShouldHaveValidationErrorFor(feedItem => feedItem.Link);
-        }
-
-        [Test]
         public void InvalidLinkShouldReturnValidatorError()
         {
             var feedItem = new FeedItem()
@@ -115,6 +101,168 @@
             var result = validator.TestValidate(feedItem);
 
             result.ShouldHaveValidationErrorFor(feedItem => feedItem.Link);
+        }
+
+        [Test]
+        public void EmptyCategoryShouldReturnValidatorError()
+        {
+            var feedItem = new FeedItem()
+            {
+                Title = "Venice Film Festival Tries to Quit Sinking",
+                Link = "http://nytimes.com/2004/12/07FEST.html"
+            };
+            feedItem.Categories.Add("");
+
+            var result = validator.TestValidate(feedItem);
+
+            result.ShouldHaveValidationErrorFor(feedItem => feedItem.Categories);
+        }
+
+        [Test]
+        public void InvalidCommentsShouldReturnValidatorError()
+        {
+            var feedItem = new FeedItem()
+            {
+                Title = "Venice Film Festival Tries to Quit Sinking",
+                Link = "http://nytimes.com/2004/12/07FEST.html",
+                Comments = "ekzemplo/"
+            };
+
+            var result = validator.TestValidate(feedItem);
+
+            result.ShouldHaveValidationErrorFor(feedItem => feedItem.Comments);
+        }
+
+        [Test]
+        public void FeedItemWithAuthorShouldHaveFeedPersonValidator()
+        {
+            var feedItem = new FeedItem()
+            {
+                Title = "Venice Film Festival Tries to Quit Sinking",
+                Link = "http://nytimes.com/2004/12/07FEST.html",
+                Description = @"Some of the most heated chatter at the Venice Film Festival
+                                this week was about the way that the arrival of the stars at
+                                the Palazzo del Cinema was being staged.",
+                Author = new FeedPerson()
+                {
+                    Name = "Kalen Dubrick",
+                    EmailAddress = "kalen@kalendubrick.com"
+                }
+            };
+
+            var _ = validator.TestValidate(feedItem);
+
+            validator.ShouldHaveChildValidator(feedItem => feedItem.Author, typeof(FeedPersonValidator));
+        }
+
+        [Test]
+        public void FeedItemWithInvalidAuthorEmailAddressShouldReturnValidatorError()
+        {
+            var feedItem = new FeedItem()
+            {
+                Title = "Venice Film Festival Tries to Quit Sinking",
+                Link = "http://nytimes.com/2004/12/07FEST.html",
+                Description = @"Some of the most heated chatter at the Venice Film Festival
+                                this week was about the way that the arrival of the stars at
+                                the Palazzo del Cinema was being staged.",
+                Author = new FeedPerson()
+                {
+                    Name = "Kalen Dubrick",
+                    EmailAddress = "kalen"
+                }
+            };
+
+            var result = validator.TestValidate(feedItem);
+
+            result.ShouldHaveValidationErrorFor(feedItem => feedItem.Author.EmailAddress);
+        }
+
+        [Test]
+        public void FeedItemWithEmptyAuthorNameShouldReturnValidatorError()
+        {
+            var feedItem = new FeedItem()
+            {
+                Title = "Venice Film Festival Tries to Quit Sinking",
+                Link = "http://nytimes.com/2004/12/07FEST.html",
+                Description = @"Some of the most heated chatter at the Venice Film Festival
+                                this week was about the way that the arrival of the stars at
+                                the Palazzo del Cinema was being staged.",
+                Author = new FeedPerson()
+                {
+                    Name = "",
+                    EmailAddress = "kalen@kalendubrick.com"
+                }
+            };
+
+            var result = validator.TestValidate(feedItem);
+
+            result.ShouldHaveValidationErrorFor(feedItem => feedItem.Author.Name);
+        }
+
+        [Test]
+        public void FeedItemWithSourceShouldHaveFeedItemSourceValidator()
+        {
+            var feedItem = new FeedItem()
+            {
+                Title = "Venice Film Festival Tries to Quit Sinking",
+                Link = "http://nytimes.com/2004/12/07FEST.html",
+                Description = @"Some of the most heated chatter at the Venice Film Festival
+                                this week was about the way that the arrival of the stars at
+                                the Palazzo del Cinema was being staged.",
+                Source = new FeedItemSource()
+                {
+                    Name = "Tomalak's Realm",
+                    Url = "http://www.tomalak.org/links2.xml"
+                }
+            };
+
+            var _ = validator.TestValidate(feedItem);
+
+            validator.ShouldHaveChildValidator(feedItem => feedItem.Source, typeof(FeedItemSourceValidator));
+        }
+
+        [Test]
+        public void FeedItemWithEmptySourceUrlShouldReturnValidatorError()
+        {
+            var feedItem = new FeedItem()
+            {
+                Title = "Venice Film Festival Tries to Quit Sinking",
+                Link = "http://nytimes.com/2004/12/07FEST.html",
+                Description = @"Some of the most heated chatter at the Venice Film Festival
+                                this week was about the way that the arrival of the stars at
+                                the Palazzo del Cinema was being staged.",
+                Source = new FeedItemSource()
+                {
+                    Name = "Tomalak's Realm",
+                    Url = ""
+                }
+            };
+
+            var result = validator.TestValidate(feedItem);
+
+            result.ShouldHaveValidationErrorFor(feedItem => feedItem.Source.Url);
+        }
+
+        [Test]
+        public void FeedItemWithInvalidSourceUrlShouldReturnValidatorError()
+        {
+            var feedItem = new FeedItem()
+            {
+                Title = "Venice Film Festival Tries to Quit Sinking",
+                Link = "http://nytimes.com/2004/12/07FEST.html",
+                Description = @"Some of the most heated chatter at the Venice Film Festival
+                                this week was about the way that the arrival of the stars at
+                                the Palazzo del Cinema was being staged.",
+                Source = new FeedItemSource()
+                {
+                    Name = "Tomalak's Realm",
+                    Url = "tomalak/"
+                }
+            };
+
+            var result = validator.TestValidate(feedItem);
+
+            result.ShouldHaveValidationErrorFor(feedItem => feedItem.Source.Url);
         }
     }
 }
