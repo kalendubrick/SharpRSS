@@ -61,18 +61,18 @@ namespace SharpRSS.FeedParser.Models
         /// Gets or sets the publication date for content
         /// in the channel.
         /// </summary>
-        public DateTimeOffset PublishDate { get; set; }
+        public DateTimeOffset? PublishDate { get; set; }
 
         /// <summary>
         /// Gets or sets the last time the content of the
         /// channel changed.
         /// </summary>
-        public DateTimeOffset LastBuildDate { get; set; }
+        public DateTimeOffset? LastBuildDate { get; set; }
 
         /// <summary>
         /// Gets the category/categories the channel belongs to.
         /// </summary>
-        public IList<string> Categories { get; }
+        public IList<string> Categories { get; } = new List<string>();
 
         /// <summary>
         /// Gets or sets a string indicating the program
@@ -98,7 +98,7 @@ namespace SharpRSS.FeedParser.Models
         /// how long a channel can be cached before refreshing from
         /// source.
         /// </summary>
-        public int TimeToLive { get; set; }
+        public int? TimeToLive { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="FeedImage"/> to be
@@ -116,18 +116,18 @@ namespace SharpRSS.FeedParser.Models
         /// Gets the hours (0-23) when aggregators
         /// may not read the channel.
         /// </summary>
-        public IList<int> SkipHours { get; }
+        public IList<int> SkipHours { get; } = new List<int>();
 
         /// <summary>
         /// Gets the days (Monday-Sunday) when aggregators
         /// may not read the channel.
         /// </summary>
-        public IList<string> SkipDays { get; }
+        public IList<string> SkipDays { get; } = new List<string>();
 
         /// <summary>
         /// Gets the items in the feed.
         /// </summary>
-        public IList<FeedItem> Items { get; }
+        public IList<FeedItem> Items { get; } = new List<FeedItem>();
 
         #endregion
     }
