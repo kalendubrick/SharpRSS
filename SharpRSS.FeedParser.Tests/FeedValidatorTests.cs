@@ -189,5 +189,92 @@
 
             result.ShouldHaveValidationErrorFor(feed => feed.Description);
         }
+
+        [Test]
+        public void FeedWithFeedCloudShouldHaveFeedCloudValidator()
+        {
+            var feed = new Feed()
+            {
+                Title = "GoUpstate.com News Headlines",
+                Link = "http://www.goupstate.com/",
+                Description = "The latest news from GoUpstate.com, a Spartanburg Herald-Journal Web site.",
+                Cloud = new FeedCloud()
+                {
+                    Domain = "rpc.sys.com",
+                    Port = 80,
+                    Path = "/RPC2",
+                    RegisterProcedure = "myCloud.rssPleaseNotify",
+                    Protocol = "xml-rpc"
+                }
+            };
+
+            var _ = validator.TestValidate(feed);
+
+            validator.ShouldHaveChildValidator(feed => feed.Cloud, typeof(FeedCloudValidator));
+        }
+
+        [Test]
+        public void FeedWithFeedImageShouldHaveFeedImageValidator()
+        {
+            var feed = new Feed()
+            {
+                Title = "GoUpstate.com News Headlines",
+                Link = "http://www.goupstate.com/",
+                Description = "The latest news from GoUpstate.com, a Spartanburg Herald-Journal Web site.",
+                Image = new FeedImage()
+                {
+                    Url = "https://via.placeholder.com/150",
+                    Title = "Liftoff News",
+                    Link = "http://liftoff.msfc.nasa.gov/",
+                    Width = 144,
+                    Height = 400,
+                    Description = "A placeholder image"
+                }
+            };
+
+            var _ = validator.TestValidate(feed);
+
+            validator.ShouldHaveChildValidator(feed => feed.Image, typeof(FeedImageValidator));
+        }
+
+        [Test]
+        public void FeedWithManagingEditorShouldHaveFeedPersonValidator()
+        {
+            var feed = new Feed()
+            {
+                Title = "GoUpstate.com News Headlines",
+                Link = "http://www.goupstate.com/",
+                Description = "The latest news from GoUpstate.com, a Spartanburg Herald-Journal Web site.",
+                ManagingEditor = new FeedPerson()
+                {
+                    Name = "Kalen Dubrick",
+                    EmailAddress = "kalen@kalendubrick.com"
+                }
+            };
+
+            var _ = validator.TestValidate(feed);
+
+            validator.ShouldHaveChildValidator(feed => feed.ManagingEditor, typeof(FeedPersonValidator));
+        }
+
+        [Test]
+        public void FeedWithWebmasterShouldHaveFeedPersonValidator()
+        {
+            var feed = new Feed()
+            {
+                Title = "GoUpstate.com News Headlines",
+                Link = "http://www.goupstate.com/",
+                Description = "The latest news from GoUpstate.com, a Spartanburg Herald-Journal Web site.",
+                Webmaster = new FeedPerson()
+                {
+                    Name = "Kalen Dubrick",
+                    EmailAddress = "kalen@kalendubrick.com"
+                }
+            };
+
+            var _ = validator.TestValidate(feed);
+
+            validator.ShouldHaveChildValidator(feed => feed.Webmaster, typeof(FeedPersonValidator));
+        }
     }
 }
