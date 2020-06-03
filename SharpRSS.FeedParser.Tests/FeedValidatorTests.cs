@@ -276,5 +276,27 @@
 
             validator.ShouldHaveChildValidator(feed => feed.Webmaster, typeof(FeedPersonValidator));
         }
+
+        [Test]
+        public void FeedWithFeedTextInputShouldHaveFeedTextInputValidator()
+        {
+            var feed = new Feed()
+            {
+                Title = "GoUpstate.com News Headlines",
+                Link = "http://www.goupstate.com/",
+                Description = "The latest news from GoUpstate.com, a Spartanburg Herald-Journal Web site.",
+                TextInput = new FeedTextInput()
+                {
+                    Title = "Submit",
+                    Description = "A text input box",
+                    Name = "txtInput",
+                    Link = "http://search.yahoo.com/search?"
+                }
+            };
+
+            var _ = validator.TestValidate(feed);
+
+            validator.ShouldHaveChildValidator(feed => feed.TextInput, typeof(FeedTextInputValidator));
+        }
     }
 }
