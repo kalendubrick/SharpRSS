@@ -28,6 +28,11 @@ namespace SharpRSS.FeedParser
                 throw new ArgumentNullException(nameof(rssFeed));
             }
 
+            if (string.IsNullOrWhiteSpace(rssFeed))
+            {
+                throw new ArgumentException("Cannot be empty", nameof(rssFeed));
+            }
+
             return new Feed();
         }
     }
