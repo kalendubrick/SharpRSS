@@ -94,13 +94,24 @@
         }
 
         [Test]
-        public void EmptyXmlStringShouldThrowArgumentNullException()
+        public void EmptyXmlStringShouldThrowArgumentException()
         {
             var feedParser = new FeedParser();
 
-            var ex = Assert.Throws<ArgumentNullException>(() => feedParser.Parse(""));
+            var ex = Assert.Throws<ArgumentException>(() => feedParser.Parse(""));
 
-            Assert.AreEqual(ex.Message, "xmlFeed cannot be empty");
+            Assert.AreEqual(ex.Message, $"Cannot be empty (Parameter '{ex.ParamName}')");
+        }
+
+        [Test]
+        public void InvalidXmlStringShouldThrowArgumentException()
+        {
+            var invalidXml = "this is not valid xml";
+            var feedParser = new FeedParser();
+
+            var ex = Assert.Throws<ArgumentException>(() => feedParser.Parse(invalidXml));
+
+            Assert.AreEqual(ex.Message, $"Is not valid XML (Parameter '{ex.ParamName}')");
         }
 
         [Test]
