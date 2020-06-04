@@ -90,7 +90,7 @@
 
             var ex = Assert.Throws<ArgumentNullException>(() => feedParser.Parse(null));
 
-            Assert.AreEqual(ex.Message, "xmlFeed cannot be null");
+            Assert.AreEqual(ex.Message, $"Value cannot be null. (Parameter '{ex.ParamName}')");
         }
 
         [Test]
