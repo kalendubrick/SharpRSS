@@ -4,6 +4,7 @@
     using NUnit.Framework;
     using SharpRSS.FeedParser.Models;
     using SharpRSS.FeedParser.Validators;
+    using System;
 
     class FeedParserTests
     {
@@ -80,6 +81,48 @@
             var result = feedValidator.TestValidate(feed);
 
             result.ShouldNotHaveAnyValidationErrors();
+        }
+
+        [Test]
+        public void NullXmlStringShouldThrowArgumentNullException()
+        {
+            var feedParser = new FeedParser();
+
+            var ex = Assert.Throws<ArgumentNullException>(() => feedParser.Parse(null));
+
+            Assert.AreEqual(ex.Message, "xmlFeed cannot be null");
+        }
+
+        [Test]
+        public void EmptyXmlStringShouldThrowArgumentNullException()
+        {
+            var feedParser = new FeedParser();
+
+            var ex = Assert.Throws<ArgumentNullException>(() => feedParser.Parse(""));
+
+            Assert.AreEqual(ex.Message, "xmlFeed cannot be empty");
+        }
+
+        [Test]
+        public void NonRssRootElementShouldThrowArgumentException()
+        {
+            var nonRssFeed = @"<notrss></notrss>";
+            var feedParser = new FeedParser();
+
+            var ex = Assert.Throws<ArgumentException>(() => feedParser.Parse(nonRssFeed));
+
+            Assert.AreEqual(ex.Message, "xmlFeed must have <rss> as a root element");
+        }
+
+        [Test]
+        public void NonRss2ShouldThrowArgumentException()
+        {
+            var nonRss2Feed = @"<rss version=""0.91""></rss>";
+            var feedParser = new FeedParser();
+
+            var ex = Assert.Throws<ArgumentException>(() => feedParser.Parse(nonRss2Feed));
+
+            Assert.AreEqual(ex.Message, "xmlFeed must be RSS version 2");
         }
     }
 }
