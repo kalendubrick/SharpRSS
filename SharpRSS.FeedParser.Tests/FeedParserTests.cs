@@ -122,7 +122,7 @@
 
             var ex = Assert.Throws<ArgumentException>(() => feedParser.Parse(nonRssFeed));
 
-            Assert.AreEqual(ex.Message, "xmlFeed must have <rss> as a root element");
+            Assert.AreEqual(ex.Message, $"Root node is not <rss> (Parameter '{ex.ParamName}')");
         }
 
         [Test]
@@ -133,7 +133,7 @@
 
             var ex = Assert.Throws<ArgumentException>(() => feedParser.Parse(nonRss2Feed));
 
-            Assert.AreEqual(ex.Message, "xmlFeed must be RSS version 2");
+            Assert.AreEqual(ex.Message, $"RSS feed is not version 2 (Parameter '{ex.ParamName}')");
         }
     }
 }
