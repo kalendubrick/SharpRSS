@@ -45,6 +45,19 @@ namespace SharpRSS.FeedParser
                 throw new ArgumentException("Is not valid XML", nameof(rssFeed));
             }
 
+            var root = xmlDoc.DocumentElement;
+
+            if (!string.Equals(root.Name, "rss", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new ArgumentException("Root node is not <rss>", nameof(rssFeed));
+            }
+
+            if (root.HasAttribute("version") &&
+                !string.Equals(root.GetAttribute("version"), "2.0", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new ArgumentException("RSS feed is not version 2", nameof(rssFeed));
+            }
+
             return new Feed();
         }
     }
