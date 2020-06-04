@@ -6,7 +6,7 @@
 namespace SharpRSS.FeedParser
 {
     using System;
-
+    using System.Xml;
     using SharpRSS.FeedParser.Models;
 
     /// <summary>
@@ -17,11 +17,17 @@ namespace SharpRSS.FeedParser
         /// <summary>
         /// Parses a string representation of an XML feed into a <see cref="Feed"/> object.
         /// </summary>
-        /// <param name="xmlFeed">The string representation of the XML feed.</param>
+        /// <param name="rssFeed">The string representation of the XML feed.</param>
         /// <returns>The parsed <see cref="Feed"/> object.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="xmlFeed"/> is null or empty.</exception>
-        public Feed Parse(string xmlFeed)
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="rssFeed"/> is null.</exception>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="rssFeed"/> is empty or rss version is not 2.</exception>
+        public Feed Parse(string rssFeed)
         {
+            if (rssFeed is null)
+            {
+                throw new ArgumentNullException($"{nameof(rssFeed)}");
+            }
+
             return new Feed();
         }
     }
