@@ -6,6 +6,7 @@
 namespace SharpRSS.FeedParser
 {
     using System;
+    using System.Runtime.CompilerServices;
     using System.Xml;
     using SharpRSS.FeedParser.Models;
 
@@ -23,6 +24,8 @@ namespace SharpRSS.FeedParser
         /// <exception cref="ArgumentException">Thrown when <paramref name="rssFeed"/> is empty or rss version is not 2.</exception>
         public Feed Parse(string rssFeed)
         {
+            var xmlDoc = new XmlDocument();
+
             if (rssFeed is null)
             {
                 throw new ArgumentNullException(nameof(rssFeed));
@@ -31,6 +34,15 @@ namespace SharpRSS.FeedParser
             if (string.IsNullOrWhiteSpace(rssFeed))
             {
                 throw new ArgumentException("Cannot be empty", nameof(rssFeed));
+            }
+
+            try
+            {
+                xmlDoc.LoadXml(rssFeed);
+            }
+            catch (XmlException)
+            {
+                throw new ArgumentException("Is not valid XML", nameof(rssFeed));
             }
 
             return new Feed();
