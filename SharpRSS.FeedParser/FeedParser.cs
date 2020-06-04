@@ -25,7 +25,7 @@ namespace SharpRSS.FeedParser
         {
             if (rssFeed is null)
             {
-                throw new ArgumentNullException($"{nameof(rssFeed)}");
+                throw new ArgumentNullException(nameof(rssFeed));
             }
 
             return new Feed();
