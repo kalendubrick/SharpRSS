@@ -33,7 +33,7 @@ namespace SharpRSS.FeedParser
 
             if (string.IsNullOrWhiteSpace(rssFeed))
             {
-                throw new ArgumentException("Cannot be empty", nameof(rssFeed));
+                throw new ArgumentException(Properties.Resources.ErrorMessage_EmptyFeedString, nameof(rssFeed));
             }
 
             try
@@ -42,20 +42,20 @@ namespace SharpRSS.FeedParser
             }
             catch (XmlException)
             {
-                throw new ArgumentException("Is not valid XML", nameof(rssFeed));
+                throw new ArgumentException(Properties.Resources.ErrorMessage_InvalidXmlString, nameof(rssFeed));
             }
 
             var root = xmlDoc.DocumentElement;
 
             if (!string.Equals(root.Name, "rss", StringComparison.OrdinalIgnoreCase))
             {
-                throw new ArgumentException("Root node is not <rss>", nameof(rssFeed));
+                throw new ArgumentException(Properties.Resources.ErrorMessage_NonRssRootString, nameof(rssFeed));
             }
 
             if (root.HasAttribute("version") &&
                 !string.Equals(root.GetAttribute("version"), "2.0", StringComparison.OrdinalIgnoreCase))
             {
-                throw new ArgumentException("RSS feed is not version 2", nameof(rssFeed));
+                throw new ArgumentException(Properties.Resources.ErrorMessage_NonRss2RootString, nameof(rssFeed));
             }
 
             return new Feed();
