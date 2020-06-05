@@ -123,6 +123,9 @@
   <data name="ErrorMessage_InvalidXmlString" xml:space="preserve">
     <value>Is not valid XML</value>
   </data>
+  <data name="ErrorMessage_MissingChannel" xml:space="preserve">
+    <value>&lt;channel&gt; element is missing</value>
+  </data>
   <data name="ErrorMessage_NonRss2RootString" xml:space="preserve">
     <value>RSS feed is not version 2</value>
   </data>

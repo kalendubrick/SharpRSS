@@ -79,6 +79,15 @@ namespace SharpRSS.FeedParser.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;channel&gt; element is missing.
+        /// </summary>
+        internal static string ErrorMessage_MissingChannel {
+            get {
+                return ResourceManager.GetString("ErrorMessage_MissingChannel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to RSS feed is not version 2.
         /// </summary>
         internal static string ErrorMessage_NonRss2RootString {
