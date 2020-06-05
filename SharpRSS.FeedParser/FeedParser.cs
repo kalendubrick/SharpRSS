@@ -58,7 +58,31 @@ namespace SharpRSS.FeedParser
                 throw new ArgumentException(Properties.Resources.ErrorMessage_NonRss2RootString, nameof(rssFeed));
             }
 
-            return new Feed();
+            if (root.ChildNodes.Count < 1 || root.FirstChild.Name != "channel")
+            {
+                throw new ArgumentException(Properties.Resources.ErrorMessage_MissingChannel, nameof(rssFeed));
+            }
+
+            var feedElement = root.FirstChild as XmlElement;
+            var feed = new Feed();
+
+            foreach (XmlElement child in feedElement.ChildNodes)
+            {
+                switch (child.Name)
+                {
+                    case "title":
+                        feed.Title = child.InnerText;
+                        break;
+                    case "link":
+                        feed.Link = child.InnerText;
+                        break;
+                    case "description":
+                        feed.Description = child.InnerText;
+                        break;
+                }
+            }
+
+            return feed;
         }
     }
 }
