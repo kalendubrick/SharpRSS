@@ -18,10 +18,14 @@ namespace SharpRSS.FeedParser.Validators
         /// </summary>
         public FeedPersonValidator()
         {
-            this.RuleFor(feedPerson => feedPerson.Name).NotEmpty();
+            this.RuleFor(feedPerson => feedPerson.Name)
+                .NotEmpty()
+                .When(feedPerson => string.IsNullOrWhiteSpace(feedPerson.EmailAddress));
             this.RuleFor(feedPerson => feedPerson.EmailAddress)
                 .NotEmpty()
-                .EmailAddress();
+                .When(feedPerson => string.IsNullOrWhiteSpace(feedPerson.Name), ApplyConditionTo.CurrentValidator)
+                .EmailAddress()
+                .When(feedPerson => !string.IsNullOrWhiteSpace(feedPerson.EmailAddress), ApplyConditionTo.CurrentValidator);
         }
     }
 }

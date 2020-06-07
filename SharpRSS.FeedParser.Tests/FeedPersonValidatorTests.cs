@@ -7,6 +7,24 @@
 
     class FeedPersonValidatorTests
     {
+        private static readonly FeedPerson[] validFeedPeople =
+        {
+            new FeedPerson()
+            {
+                Name = "Kalen Dubrick",
+                EmailAddress = "kalen@kalendubrick.com"
+            },
+            new FeedPerson()
+            {
+                Name = null,
+                EmailAddress = "kalen@kalendubrick.com"
+            },
+            new FeedPerson()
+            {
+                Name = "Kalen Dubrick",
+                EmailAddress = null
+            }
+        };
         private FeedPersonValidator validator;
 
         [SetUp]
@@ -16,59 +34,12 @@
         }
 
         [Test]
-        public void ValidFeedPersonShouldNotReturnValidatorErrors()
+        [TestCaseSource("validFeedPeople")]
+        public void ValidFeedPersonShouldNotReturnValidatorErrors(FeedPerson feedPerson)
         {
-            var feedPerson = new FeedPerson()
-            {
-                Name = "Kalen Dubrick",
-                EmailAddress = "kalen@kalendubrick.com"
-            };
-
             var result = validator.TestValidate(feedPerson);
 
             result.ShouldNotHaveAnyValidationErrors();
-        }
-
-        [Test]
-        public void NullFeedPersonNameShouldReturnValidatorError()
-        {
-            var feedPerson = new FeedPerson()
-            {
-                Name = null,
-                EmailAddress = "kalen@kalendubrick.com"
-            };
-
-            var result = validator.TestValidate(feedPerson);
-
-            result.ShouldHaveValidationErrorFor(feedPerson => feedPerson.Name);
-        }
-
-        [Test]
-        public void EmptyFeedPersonNameShoudReturnValidatorError()
-        {
-            var feedPerson = new FeedPerson()
-            {
-                Name = "",
-                EmailAddress = "kalen@kalendubrick.com"
-            };
-
-            var result = validator.TestValidate(feedPerson);
-
-            result.ShouldHaveValidationErrorFor(feedPerson => feedPerson.Name);
-        }
-
-        [Test]
-        public void NullFeedPersonEmailAddressShoudReturnValidatorError()
-        {
-            var feedPerson = new FeedPerson()
-            {
-                Name = "Kalen Dubrick",
-                EmailAddress = null
-            };
-
-            var result = validator.TestValidate(feedPerson);
-
-            result.ShouldHaveValidationErrorFor(feedPerson => feedPerson.EmailAddress);
         }
 
         [Test]
@@ -82,6 +53,21 @@
 
             var result = validator.TestValidate(feedPerson);
 
+            result.ShouldHaveValidationErrorFor(feedPerson => feedPerson.EmailAddress);
+        }
+
+        [Test]
+        public void NullFeedPersonNameAndEmailAddressShouldReturnValidatorErrors()
+        {
+            var feedPerson = new FeedPerson()
+            {
+                Name = null,
+                EmailAddress = null
+            };
+
+            var result = validator.TestValidate(feedPerson);
+
+            result.ShouldHaveValidationErrorFor(feedPerson => feedPerson.Name);
             result.ShouldHaveValidationErrorFor(feedPerson => feedPerson.EmailAddress);
         }
     }
