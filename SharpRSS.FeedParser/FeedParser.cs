@@ -127,6 +127,16 @@ namespace SharpRSS.FeedParser
 
                         feed.Cloud = this.ParseFeedCloud(child, numFmt);
                         break;
+                    case "ttl":
+                        if (int.TryParse(child.InnerText, out var ttl))
+                        {
+                            feed.TimeToLive = ttl;
+                        }
+
+                        break;
+                    case "image":
+                        feed.Image = this.ParseFeedImage(child);
+                        break;
                 }
             }
 
@@ -168,6 +178,46 @@ namespace SharpRSS.FeedParser
             }
 
             return feedCloud;
+        }
+
+        private FeedImage ParseFeedImage(XmlElement el)
+        {
+            var feedImage = new FeedImage();
+
+            foreach (XmlElement child in el.ChildNodes)
+            {
+                switch (child.Name)
+                {
+                    case "url":
+                        feedImage.Url = child.InnerText;
+                        break;
+                    case "title":
+                        feedImage.Title = child.InnerText;
+                        break;
+                    case "link":
+                        feedImage.Link = child.InnerText;
+                        break;
+                    case "description":
+                        feedImage.Description = child.InnerText;
+                        break;
+                    case "height":
+                        if (int.TryParse(child.InnerText, out var height))
+                        {
+                            feedImage.Height = height;
+                        }
+
+                        break;
+                    case "width":
+                        if (int.TryParse(child.InnerText, out var width))
+                        {
+                            feedImage.Width = width;
+                        }
+
+                        break;
+                }
+            }
+
+            return feedImage;
         }
     }
 }
