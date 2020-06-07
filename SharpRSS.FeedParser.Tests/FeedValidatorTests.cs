@@ -20,6 +20,7 @@
                 Title = "GoUpstate.com News Headlines",
                 Link = "http://www.goupstate.com/",
                 Description = "The latest news from GoUpstate.com, a Spartanburg Herald-Journal Web site.",
+                Language = "en-us",
                 Cloud = new FeedCloud()
                 {
                     Domain = "rpc.sys.com",
@@ -188,6 +189,22 @@
             var result = validator.TestValidate(feed);
 
             result.ShouldHaveValidationErrorFor(feed => feed.Description);
+        }
+
+        [Test]
+        public void InvalidFeedLanguageShouldReturnValidatorError()
+        {
+            var feed = new Feed()
+            {
+                Title = "GoUpstate.com News Headlines",
+                Link = "http://www.goupstate.com/",
+                Description = "The latest news from GoUpstate.com, a Spartanburg Herald-Journal Web site.",
+                Language = "english"
+            };
+
+            var result = validator.TestValidate(feed);
+
+            result.ShouldHaveValidationErrorFor(feed => feed.Language);
         }
 
         [Test]

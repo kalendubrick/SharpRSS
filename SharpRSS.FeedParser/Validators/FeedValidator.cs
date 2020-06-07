@@ -27,6 +27,9 @@ namespace SharpRSS.FeedParser.Validators
                 .Must(uri => Uri.TryCreate(uri, UriKind.Absolute, out _))
                 .When(feed => !string.IsNullOrWhiteSpace(feed.Link), ApplyConditionTo.CurrentValidator);
             this.RuleFor(feed => feed.Description).NotEmpty();
+            this.RuleFor(feed => feed.Language)
+                .Matches("[a-zA-Z]{2}-[a-zA-Z]{2}")
+                .When(feed => !string.IsNullOrWhiteSpace(feed.Language));
             this.RuleForEach(feed => feed.Categories).NotEmpty();
             this.RuleForEach(feed => feed.SkipHours).InclusiveBetween(0, 24);
             this.RuleForEach(feed => feed.SkipDays).Matches("^(Sun|Mon|Tues|Wednes|Thurs|Fri|Satur)day$");
