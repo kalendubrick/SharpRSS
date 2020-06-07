@@ -109,9 +109,9 @@
             var invalidXml = "this is not valid xml";
             var feedParser = new FeedParser();
 
-            var ex = Assert.Throws<ArgumentException>(() => feedParser.Parse(invalidXml));
+            var ex = Assert.Throws<FormatException>(() => feedParser.Parse(invalidXml));
 
-            Assert.AreEqual(ex.Message, $"Is not valid XML (Parameter '{ex.ParamName}')");
+            Assert.AreEqual(ex.Message, "Is not valid XML");
         }
 
         [Test]
@@ -120,9 +120,9 @@
             var nonRssFeed = @"<notrss></notrss>";
             var feedParser = new FeedParser();
 
-            var ex = Assert.Throws<ArgumentException>(() => feedParser.Parse(nonRssFeed));
+            var ex = Assert.Throws<FormatException>(() => feedParser.Parse(nonRssFeed));
 
-            Assert.AreEqual(ex.Message, $"Root node is not <rss> (Parameter '{ex.ParamName}')");
+            Assert.AreEqual(ex.Message, "Root node is not <rss>");
         }
 
         [Test]
@@ -131,9 +131,9 @@
             var nonRss2Feed = @"<rss version=""0.91""></rss>";
             var feedParser = new FeedParser();
 
-            var ex = Assert.Throws<ArgumentException>(() => feedParser.Parse(nonRss2Feed));
+            var ex = Assert.Throws<FormatException>(() => feedParser.Parse(nonRss2Feed));
 
-            Assert.AreEqual(ex.Message, $"RSS feed is not version 2 (Parameter '{ex.ParamName}')");
+            Assert.AreEqual(ex.Message, "RSS feed is not version 2");
         }
     }
 }

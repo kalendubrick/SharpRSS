@@ -41,27 +41,27 @@ namespace SharpRSS.FeedParser
             {
                 xmlDoc.LoadXml(rssFeed);
             }
-            catch (XmlException)
+            catch (XmlException e)
             {
-                throw new ArgumentException(Properties.Resources.ErrorMessage_InvalidXmlString, nameof(rssFeed));
+                throw new FormatException(Properties.Resources.ErrorMessage_InvalidXmlString, e);
             }
 
             var root = xmlDoc.DocumentElement;
 
             if (!string.Equals(root.Name, "rss", StringComparison.OrdinalIgnoreCase))
             {
-                throw new ArgumentException(Properties.Resources.ErrorMessage_NonRssRootString, nameof(rssFeed));
+                throw new FormatException(Properties.Resources.ErrorMessage_NonRssRootString);
             }
 
             if (root.HasAttribute("version") &&
                 !string.Equals(root.GetAttribute("version"), "2.0", StringComparison.OrdinalIgnoreCase))
             {
-                throw new ArgumentException(Properties.Resources.ErrorMessage_NonRss2RootString, nameof(rssFeed));
+                throw new FormatException(Properties.Resources.ErrorMessage_NonRss2RootString);
             }
 
             if (root.ChildNodes.Count < 1 || root.FirstChild.Name != "channel")
             {
-                throw new ArgumentException(Properties.Resources.ErrorMessage_MissingChannel, nameof(rssFeed));
+                throw new FormatException(Properties.Resources.ErrorMessage_MissingChannel);
             }
 
             var feedElement = root.FirstChild as XmlElement;
