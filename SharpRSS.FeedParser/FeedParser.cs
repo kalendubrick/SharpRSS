@@ -125,7 +125,7 @@ namespace SharpRSS.FeedParser
                             numFmt = new CultureInfo(feed.Language).NumberFormat;
                         }
 
-                        feed.Cloud = this.ParseFeedCloud(child, numFmt);
+                        feed.Cloud = ParseFeedCloud(child, numFmt);
                         break;
                     case "ttl":
                         if (int.TryParse(child.InnerText, out var ttl))
@@ -135,7 +135,10 @@ namespace SharpRSS.FeedParser
 
                         break;
                     case "image":
-                        feed.Image = this.ParseFeedImage(child);
+                        feed.Image = ParseFeedImage(child);
+                        break;
+                    case "textInput":
+                        feed.TextInput = ParseFeedInput(child);
                         break;
                 }
             }
@@ -143,7 +146,33 @@ namespace SharpRSS.FeedParser
             return feed;
         }
 
-        private FeedCloud ParseFeedCloud(XmlElement el, NumberFormatInfo fmt)
+        private static FeedTextInput ParseFeedInput(XmlElement el)
+        {
+            var textInput = new FeedTextInput();
+
+            foreach (XmlAttribute attr in el.Attributes)
+            {
+                switch (attr.Name)
+                {
+                    case "title":
+                        textInput.Title = el.InnerText;
+                        break;
+                    case "description":
+                        textInput.Description = el.InnerText;
+                        break;
+                    case "name":
+                        textInput.Name = el.InnerText;
+                        break;
+                    case "link":
+                        textInput.Link = el.InnerText;
+                        break;
+                }
+            }
+
+            return textInput;
+        }
+
+        private static FeedCloud ParseFeedCloud(XmlElement el, NumberFormatInfo fmt)
         {
             var feedCloud = new FeedCloud();
 
@@ -180,7 +209,7 @@ namespace SharpRSS.FeedParser
             return feedCloud;
         }
 
-        private FeedImage ParseFeedImage(XmlElement el)
+        private static FeedImage ParseFeedImage(XmlElement el)
         {
             var feedImage = new FeedImage();
 
