@@ -125,7 +125,7 @@ namespace SharpRSS.FeedParser
                             numFmt = new CultureInfo(feed.Language).NumberFormat;
                         }
 
-                        feed.Cloud = ParseFeedCloud(child, numFmt);
+                        feed.Cloud = ParseCloud(child, numFmt);
                         break;
                     case "ttl":
                         if (int.TryParse(child.InnerText, out var ttl))
@@ -135,10 +135,38 @@ namespace SharpRSS.FeedParser
 
                         break;
                     case "image":
-                        feed.Image = ParseFeedImage(child);
+                        feed.Image = ParseImage(child);
                         break;
                     case "textInput":
-                        feed.TextInput = ParseFeedInput(child);
+                        feed.TextInput = ParseTextInput(child);
+                        break;
+                    case "skipHours":
+                        if (feed.Language != null)
+                        {
+                            numFmt = new CultureInfo(feed.Language).NumberFormat;
+                        }
+
+                        foreach (XmlElement hour in child.ChildNodes)
+                        {
+                            try
+                            {
+                                feed.SkipHours.Add(int.Parse(hour.InnerText, numFmt));
+                            }
+                            catch (FormatException) { }
+                            catch (OverflowException) { }
+                        }
+
+                        break;
+                    case "skipDays":
+                        foreach (XmlElement day in child.ChildNodes)
+                        {
+                            feed.SkipDays.Add(day.InnerText);
+                        }
+
+                        break;
+                    case "item":
+                        feed.Items.Add(ParseItem(child));
+
                         break;
                 }
             }
@@ -146,7 +174,25 @@ namespace SharpRSS.FeedParser
             return feed;
         }
 
-        private static FeedTextInput ParseFeedInput(XmlElement el)
+        private static FeedItem ParseItem(XmlElement el)
+        {
+            var item = new FeedItem();
+
+            foreach (XmlElement child in el.ChildNodes)
+            {
+                switch (child.Name)
+                {
+                    case "title":
+                        item.Title = child.InnerText;
+
+                        break;
+                }
+            }
+
+            return item;
+        }
+
+        private static FeedTextInput ParseTextInput(XmlElement el)
         {
             var textInput = new FeedTextInput();
 
@@ -172,7 +218,7 @@ namespace SharpRSS.FeedParser
             return textInput;
         }
 
-        private static FeedCloud ParseFeedCloud(XmlElement el, NumberFormatInfo fmt)
+        private static FeedCloud ParseCloud(XmlElement el, NumberFormatInfo fmt)
         {
             var feedCloud = new FeedCloud();
 
@@ -209,7 +255,7 @@ namespace SharpRSS.FeedParser
             return feedCloud;
         }
 
-        private static FeedImage ParseFeedImage(XmlElement el)
+        private static FeedImage ParseImage(XmlElement el)
         {
             var feedImage = new FeedImage();
 
