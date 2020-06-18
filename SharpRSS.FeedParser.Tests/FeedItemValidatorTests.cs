@@ -222,6 +222,29 @@
         }
 
         [Test]
+        public void FeedItemWithEnclosureShouldHaveFeedItemEnclosureValidator()
+        {
+            var feedItem = new FeedItem()
+            {
+                Title = "Venice Film Festival Tries to Quit Sinking",
+                Link = "http://nytimes.com/2004/12/07FEST.html",
+                Description = @"Some of the most heated chatter at the Venice Film Festival
+                                this week was about the way that the arrival of the stars at
+                                the Palazzo del Cinema was being staged.",
+                Enclosure = new FeedItemEnclosure()
+                {
+                    Url = "http://www.scripting.com/mp3s/weatherReportSuite.mp3",
+                    Length = 12216320,
+                    MimeType = "audio/mpeg"
+                }
+            };
+
+            var _ = validator.TestValidate(feedItem);
+
+            validator.ShouldHaveChildValidator(feedItem => feedItem.Enclosure, typeof(FeedItemEnclosureValidator));
+        }
+
+        [Test]
         public void FeedItemWithEmptySourceUrlShouldReturnValidatorError()
         {
             var feedItem = new FeedItem()
