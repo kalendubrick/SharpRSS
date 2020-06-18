@@ -95,7 +95,7 @@ namespace SharpRSS.FeedParser
                         feed.Webmaster = new FeedPerson() { EmailAddress = child.InnerText };
                         break;
                     case "publishDate":
-                        if (feed.Language != null)
+                        if (!string.IsNullOrWhiteSpace(feed.Language))
                         {
                             dateFmt = new CultureInfo(feed.Language).DateTimeFormat;
                         }
@@ -103,7 +103,7 @@ namespace SharpRSS.FeedParser
                         feed.PublishDate = DateTimeOffset.Parse(child.InnerText, dateFmt);
                         break;
                     case "lastBuildDate":
-                        if (feed.Language != null)
+                        if (!string.IsNullOrWhiteSpace(feed.Language))
                         {
                             dateFmt = new CultureInfo(feed.Language).DateTimeFormat;
                         }
@@ -120,7 +120,7 @@ namespace SharpRSS.FeedParser
                         feed.Docs = child.InnerText;
                         break;
                     case "cloud":
-                        if (feed.Language != null)
+                        if (!string.IsNullOrWhiteSpace(feed.Language))
                         {
                             numFmt = new CultureInfo(feed.Language).NumberFormat;
                         }
@@ -141,7 +141,7 @@ namespace SharpRSS.FeedParser
                         feed.TextInput = ParseTextInput(child);
                         break;
                     case "skipHours":
-                        if (feed.Language != null)
+                        if (!string.IsNullOrWhiteSpace(feed.Language))
                         {
                             numFmt = new CultureInfo(feed.Language).NumberFormat;
                         }
@@ -166,7 +166,6 @@ namespace SharpRSS.FeedParser
                         break;
                     case "item":
                         feed.Items.Add(ParseItem(child));
-
                         break;
                 }
             }
@@ -174,8 +173,9 @@ namespace SharpRSS.FeedParser
             return feed;
         }
 
-        private static FeedItem ParseItem(XmlElement el)
+        private static FeedItem ParseItem(XmlElement el, string language = "en-us")
         {
+            var dateFmt = new CultureInfo(language).DateTimeFormat;
             var item = new FeedItem();
 
             foreach (XmlElement child in el.ChildNodes)
@@ -184,12 +184,51 @@ namespace SharpRSS.FeedParser
                 {
                     case "title":
                         item.Title = child.InnerText;
+                        break;
+                    case "link":
+                        item.Link = child.InnerText;
+                        break;
+                    case "description":
+                        item.Description = child.InnerText;
+                        break;
+                    case "author":
+                        item.Author = new FeedPerson() { EmailAddress = child.InnerText };
+                        break;
+                    case "category":
+                        item.Categories.Add(child.InnerText);
+                        break;
+                    case "comments":
+                        item.Comments = child.InnerText;
+                        break;
+                    case "enclosure":
+                        item.Enclosure = ParseEnclosure(child);
+                        break;
+                    case "itemGuid":
+                        item.ItemGuid = child.InnerText;
+                        break;
+                    case "publishDate":
+                        item.PublishDate = DateTimeOffset.Parse(child.InnerText, dateFmt);
+                        break;
+                    case "source":
+                        if (child.HasAttribute("url"))
+                        {
+                            item.Source = new FeedItemSource()
+                            {
+                                Name = child.InnerText,
+                                Url = child.GetAttribute("url"),
+                            };
+                        }
 
                         break;
                 }
             }
 
             return item;
+        }
+
+        private static FeedItemEnclosure ParseEnclosure(XmlElement child)
+        {
+            throw new NotImplementedException();
         }
 
         private static FeedTextInput ParseTextInput(XmlElement el)
