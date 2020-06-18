@@ -38,6 +38,7 @@ namespace SharpRSS.FeedParser.Validators
             // Validators from sub-elements
             this.RuleFor(feedItem => feedItem.Author).SetValidator(new FeedPersonValidator());
             this.RuleFor(feedItem => feedItem.Source).SetValidator(new FeedItemSourceValidator());
+            this.RuleFor(feedItem => feedItem.Enclosure).SetValidator(new FeedItemEnclosureValidator());
         }
     }
 }
