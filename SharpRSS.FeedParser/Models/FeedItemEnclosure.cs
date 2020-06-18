@@ -15,7 +15,7 @@ namespace SharpRSS.FeedParser.Models
         /// <summary>
         /// Gets or sets the URL where the enclosure is located.
         /// </summary>
-        public Uri Url { get; set; }
+        public string Url { get; set; }
 
         /// <summary>
         /// Gets or sets the length of the enclosure, in bytes.
