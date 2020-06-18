@@ -228,7 +228,14 @@ namespace SharpRSS.FeedParser
 
         private static FeedItemEnclosure ParseEnclosure(XmlElement child)
         {
-            throw new NotImplementedException();
+            var enclosure = new FeedItemEnclosure();
+
+            if (child.HasAttribute("url"))
+            {
+                enclosure.Url = child.GetAttribute("url");
+            }
+
+            return enclosure;
         }
 
         private static FeedTextInput ParseTextInput(XmlElement el)
