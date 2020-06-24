@@ -152,8 +152,12 @@ namespace SharpRSS.FeedParser
                             {
                                 feed.SkipHours.Add(int.Parse(hour.InnerText, numFmt));
                             }
-                            catch (FormatException) { }
-                            catch (OverflowException) { }
+                            catch (FormatException)
+                            {
+                            }
+                            catch (OverflowException)
+                            {
+                            }
                         }
 
                         break;
@@ -176,6 +180,7 @@ namespace SharpRSS.FeedParser
         private static FeedItem ParseItem(XmlElement el, string language = "en-us")
         {
             var dateFmt = new CultureInfo(language).DateTimeFormat;
+            var numFmt = new CultureInfo(language).NumberFormat;
             var item = new FeedItem();
 
             foreach (XmlElement child in el.ChildNodes)
@@ -201,7 +206,7 @@ namespace SharpRSS.FeedParser
                         item.Comments = child.InnerText;
                         break;
                     case "enclosure":
-                        item.Enclosure = ParseEnclosure(child);
+                        item.Enclosure = ParseEnclosure(child, numFmt);
                         break;
                     case "itemGuid":
                         item.ItemGuid = child.InnerText;
@@ -226,13 +231,29 @@ namespace SharpRSS.FeedParser
             return item;
         }
 
-        private static FeedItemEnclosure ParseEnclosure(XmlElement child)
+        private static FeedItemEnclosure ParseEnclosure(XmlElement el, NumberFormatInfo fmt)
         {
             var enclosure = new FeedItemEnclosure();
 
-            if (child.HasAttribute("url"))
+            if (el.HasAttribute("url"))
             {
-                enclosure.Url = child.GetAttribute("url");
+                enclosure.Url = el.GetAttribute("url");
+            }
+
+            if (el.HasAttribute("length"))
+            {
+                try
+                {
+                    enclosure.Length = long.Parse(el.GetAttribute("length"), fmt);
+                }
+                catch (FormatException)
+                {
+                }
+            }
+
+            if (el.HasAttribute("mimeType"))
+            {
+                enclosure.MimeType = el.GetAttribute("mimeType");
             }
 
             return enclosure;
