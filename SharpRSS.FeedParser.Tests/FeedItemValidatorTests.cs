@@ -178,28 +178,6 @@
         }
 
         [Test]
-        public void FeedItemWithEmptyAuthorNameShouldReturnValidatorError()
-        {
-            var feedItem = new FeedItem()
-            {
-                Title = "Venice Film Festival Tries to Quit Sinking",
-                Link = "http://nytimes.com/2004/12/07FEST.html",
-                Description = @"Some of the most heated chatter at the Venice Film Festival
-                                this week was about the way that the arrival of the stars at
-                                the Palazzo del Cinema was being staged.",
-                Author = new FeedPerson()
-                {
-                    Name = "",
-                    EmailAddress = "kalen@kalendubrick.com"
-                }
-            };
-
-            var result = validator.TestValidate(feedItem);
-
-            result.ShouldHaveValidationErrorFor(feedItem => feedItem.Author.Name);
-        }
-
-        [Test]
         public void FeedItemWithSourceShouldHaveFeedItemSourceValidator()
         {
             var feedItem = new FeedItem()
