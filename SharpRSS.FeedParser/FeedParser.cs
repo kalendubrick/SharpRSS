@@ -9,6 +9,7 @@ namespace SharpRSS.FeedParser
     using System.Globalization;
     using System.Runtime.CompilerServices;
     using System.Xml;
+    using Microsoft.Extensions.Logging;
     using SharpRSS.FeedParser.Models;
 
     /// <summary>
@@ -16,6 +17,17 @@ namespace SharpRSS.FeedParser
     /// </summary>
     public class FeedParser
     {
+        private readonly ILogger logger;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FeedParser"/> class.
+        /// </summary>
+        /// <param name="logger">An <see cref="ILogger"/> instance.</param>
+        public FeedParser(ILogger<FeedParser> logger)
+        {
+            this.logger = logger;
+        }
+
         /// <summary>
         /// Parses a string representation of an XML feed into a <see cref="Feed"/> object.
         /// </summary>
