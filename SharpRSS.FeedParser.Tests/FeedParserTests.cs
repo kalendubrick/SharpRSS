@@ -1,6 +1,7 @@
 ﻿namespace SharpRSS.FeedParser.Tests
 {
     using FluentValidation.TestHelper;
+    using Microsoft.Extensions.Logging.Abstractions;
     using NUnit.Framework;
     using SharpRSS.FeedParser.Models;
     using SharpRSS.FeedParser.Validators;
@@ -8,6 +9,14 @@
 
     class FeedParserTests
     {
+        private NullLogger<FeedParser> logger;
+
+        [OneTimeSetUp]
+        public void InitializeNullLogger()
+        {
+            logger = new NullLogger<FeedParser>();
+        }
+
         [Test]
         public void ParseMethodShouldParseValidXMLString()
         {
@@ -74,7 +83,7 @@
                                   </channel>
                                 </rss>";
 
-            var feedParser = new FeedParser();
+            var feedParser = new FeedParser(logger);
             var feed = feedParser.Parse(xmlString);
             var feedValidator = new FeedValidator();
 
@@ -175,7 +184,7 @@
                                     </item>
                                   </channel>
                                 </rss>";
-            var feedParser = new FeedParser();
+            var feedParser = new FeedParser(logger);
             var parsedFeed = feedParser.Parse(xmlString);
 
 
@@ -184,7 +193,7 @@
         [Test]
         public void NullXmlStringShouldThrowArgumentNullException()
         {
-            var feedParser = new FeedParser();
+            var feedParser = new FeedParser(logger);
 
             var ex = Assert.Throws<ArgumentNullException>(() => feedParser.Parse(null));
 
@@ -194,7 +203,7 @@
         [Test]
         public void EmptyXmlStringShouldThrowArgumentException()
         {
-            var feedParser = new FeedParser();
+            var feedParser = new FeedParser(logger);
 
             var ex = Assert.Throws<ArgumentException>(() => feedParser.Parse(""));
 
@@ -205,7 +214,7 @@
         public void InvalidXmlStringShouldThrowArgumentException()
         {
             var invalidXml = "this is not valid xml";
-            var feedParser = new FeedParser();
+            var feedParser = new FeedParser(logger);
 
             var ex = Assert.Throws<FormatException>(() => feedParser.Parse(invalidXml));
 
@@ -216,7 +225,7 @@
         public void NonRssRootElementShouldThrowArgumentException()
         {
             var nonRssFeed = @"<notrss></notrss>";
-            var feedParser = new FeedParser();
+            var feedParser = new FeedParser(logger);
 
             var ex = Assert.Throws<FormatException>(() => feedParser.Parse(nonRssFeed));
 
@@ -227,7 +236,7 @@
         public void NonRss2ShouldThrowArgumentException()
         {
             var nonRss2Feed = @"<rss version=""0.91""></rss>";
-            var feedParser = new FeedParser();
+            var feedParser = new FeedParser(logger);
 
             var ex = Assert.Throws<FormatException>(() => feedParser.Parse(nonRss2Feed));
 
