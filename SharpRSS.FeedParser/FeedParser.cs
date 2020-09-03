@@ -41,41 +41,51 @@ namespace SharpRSS.FeedParser
 
             if (rssFeed is null)
             {
+                logger.LogDebug(Properties.Resources.FeedParser_Logger_NullString);
                 throw new ArgumentNullException(nameof(rssFeed));
             }
 
             if (string.IsNullOrWhiteSpace(rssFeed))
             {
+                logger.LogDebug(Properties.Resources.FeedParser_Logger_EmptyString);
                 throw new ArgumentException(Properties.Resources.ErrorMessage_EmptyFeedString, nameof(rssFeed));
             }
 
             try
             {
+                logger.LogDebug(Properties.Resources.FeedParser_Logger_AttemptXmlParsing, rssFeed);
                 xmlDoc.LoadXml(rssFeed);
+                logger.LogDebug(Properties.Resources.FeedParser_Logger_XmlParsed, xmlDoc);
             }
             catch (XmlException e)
             {
+                logger.LogDebug(Properties.Resources.FeedParser_Logger_XmlParseFailed, rssFeed, e);
                 throw new FormatException(Properties.Resources.ErrorMessage_InvalidXmlString, e);
             }
 
             var root = xmlDoc.DocumentElement;
+            logger.LogDebug(Properties.Resources.FeedParser_Logger_GetRootElement, root);
 
             if (!string.Equals(root.Name, "rss", StringComparison.OrdinalIgnoreCase))
             {
+                logger.LogDebug(Properties.Resources.FeedParser_Logger_NonRssRootElement, root.Name);
                 throw new FormatException(Properties.Resources.ErrorMessage_NonRssRootString);
             }
 
             if (root.HasAttribute("version") &&
                 !string.Equals(root.GetAttribute("version"), "2.0", StringComparison.OrdinalIgnoreCase))
             {
+                logger.LogDebug(Properties.Resources.FeedParser_Logger_UnknownRssVersion, root.GetAttribute("version"));
                 throw new FormatException(Properties.Resources.ErrorMessage_NonRss2RootString);
             }
 
             if (root.ChildNodes.Count < 1 || root.FirstChild.Name != "channel")
             {
+                logger.LogDebug(Properties.Resources.FeedParser_Logger_MissingChannel);
                 throw new FormatException(Properties.Resources.ErrorMessage_MissingChannel);
             }
 
+            logger.LogDebug(Properties.Resources.FeedParser_Logger_BeginParsing);
             var feedElement = root.FirstChild as XmlElement;
             var feed = new Feed();
             var dateFmt = new CultureInfo("en-us").DateTimeFormat;
@@ -83,28 +93,37 @@ namespace SharpRSS.FeedParser
 
             foreach (XmlElement child in feedElement.ChildNodes)
             {
+                logger.LogDebug(Properties.Resources.FeedParser_Logger_CurrentElement, child);
+
                 switch (child.Name)
                 {
                     case "title":
                         feed.Title = child.InnerText;
+                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.Title), feed.Title);
                         break;
                     case "link":
                         feed.Link = child.InnerText;
+                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.Link), feed.Link);
                         break;
                     case "description":
                         feed.Description = child.InnerText;
+                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.Description), feed.Description);
                         break;
                     case "language":
                         feed.Language = child.InnerText;
+                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.Language), feed.Language);
                         break;
                     case "copyright":
                         feed.Copyright = child.InnerText;
+                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.Copyright), feed.Copyright);
                         break;
                     case "managingEditor":
                         feed.ManagingEditor = new FeedPerson() { EmailAddress = child.InnerText };
+                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.ManagingEditor), feed.ManagingEditor);
                         break;
                     case "webmaster":
                         feed.Webmaster = new FeedPerson() { EmailAddress = child.InnerText };
+                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.Webmaster), feed.Webmaster);
                         break;
                     case "publishDate":
                         if (!string.IsNullOrWhiteSpace(feed.Language))
@@ -113,6 +132,7 @@ namespace SharpRSS.FeedParser
                         }
 
                         feed.PublishDate = DateTimeOffset.Parse(child.InnerText, dateFmt);
+                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.PublishDate), feed.PublishDate);
                         break;
                     case "lastBuildDate":
                         if (!string.IsNullOrWhiteSpace(feed.Language))
@@ -121,15 +141,19 @@ namespace SharpRSS.FeedParser
                         }
 
                         feed.LastBuildDate = DateTimeOffset.Parse(child.InnerText, dateFmt);
+                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.LastBuildDate), feed.LastBuildDate);
                         break;
                     case "category":
                         feed.Categories.Add(child.InnerText);
+                        logger.LogDebug(Properties.Resources.FeedParser_Logger_ListItemAdded, child.InnerText, nameof(feed.Categories));
                         break;
                     case "generator":
                         feed.Generator = child.InnerText;
+                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.Generator), feed.Generator);
                         break;
                     case "docs":
                         feed.Docs = child.InnerText;
+                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.Docs), feed.Docs);
                         break;
                     case "cloud":
                         if (!string.IsNullOrWhiteSpace(feed.Language))
@@ -138,19 +162,31 @@ namespace SharpRSS.FeedParser
                         }
 
                         feed.Cloud = ParseCloud(child, numFmt);
+                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.Cloud), feed.Cloud);
                         break;
                     case "ttl":
                         if (int.TryParse(child.InnerText, out var ttl))
                         {
                             feed.TimeToLive = ttl;
+                            logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.TimeToLive), feed.TimeToLive);
+                        }
+                        else
+                        {
+                            logger.LogDebug(
+                                Properties.Resources.FeedParser_Logger_TryParseFailed,
+                                child.InnerText,
+                                typeof(int),
+                                nameof(feed.TimeToLive));
                         }
 
                         break;
                     case "image":
                         feed.Image = ParseImage(child);
+                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.Image), feed.Image);
                         break;
                     case "textInput":
                         feed.TextInput = ParseTextInput(child);
+                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.TextInput), feed.TextInput);
                         break;
                     case "skipHours":
                         if (!string.IsNullOrWhiteSpace(feed.Language))
@@ -163,12 +199,23 @@ namespace SharpRSS.FeedParser
                             try
                             {
                                 feed.SkipHours.Add(int.Parse(hour.InnerText, numFmt));
+                                logger.LogDebug(Properties.Resources.FeedParser_Logger_ListItemAdded, child.InnerText, nameof(feed.SkipHours));
                             }
                             catch (FormatException)
                             {
+                                logger.LogDebug(
+                                    Properties.Resources.FeedParser_Logger_TryParseFailed,
+                                    hour.InnerText,
+                                    typeof(int),
+                                    nameof(feed.SkipHours));
                             }
                             catch (OverflowException)
                             {
+                                logger.LogDebug(
+                                    Properties.Resources.FeedParser_Logger_TryParseFailed,
+                                    hour.InnerText,
+                                    typeof(int),
+                                    nameof(feed.SkipHours));
                             }
                         }
 
@@ -177,11 +224,15 @@ namespace SharpRSS.FeedParser
                         foreach (XmlElement day in child.ChildNodes)
                         {
                             feed.SkipDays.Add(day.InnerText);
+                            logger.LogDebug(Properties.Resources.FeedParser_Logger_ListItemAdded, child.InnerText, nameof(feed.SkipDays));
                         }
 
                         break;
                     case "item":
-                        feed.Items.Add(ParseItem(child));
+                        var item = ParseItem(child);
+
+                        feed.Items.Add(item);
+                        logger.LogDebug(Properties.Resources.FeedParser_Logger_ListItemAdded, item, nameof(feed.Items));
                         break;
                 }
             }
@@ -189,58 +240,74 @@ namespace SharpRSS.FeedParser
             return feed;
         }
 
-        private static FeedItem ParseItem(XmlElement el, string language = "en-us")
+        private FeedItem ParseItem(XmlElement el, string language = "en-us")
         {
-            var dateFmt = new CultureInfo(language).DateTimeFormat;
-            var numFmt = new CultureInfo(language).NumberFormat;
-            var item = new FeedItem();
-
-            foreach (XmlElement child in el.ChildNodes)
+            using (logger.BeginScope(el))
             {
-                switch (child.Name)
+                var dateFmt = new CultureInfo(language).DateTimeFormat;
+                var numFmt = new CultureInfo(language).NumberFormat;
+                var item = new FeedItem();
+
+                foreach (XmlElement child in el.ChildNodes)
                 {
-                    case "title":
-                        item.Title = child.InnerText;
-                        break;
-                    case "link":
-                        item.Link = child.InnerText;
-                        break;
-                    case "description":
-                        item.Description = child.InnerText;
-                        break;
-                    case "author":
-                        item.Author = new FeedPerson() { EmailAddress = child.InnerText };
-                        break;
-                    case "category":
-                        item.Categories.Add(child.InnerText);
-                        break;
-                    case "comments":
-                        item.Comments = child.InnerText;
-                        break;
-                    case "enclosure":
-                        item.Enclosure = ParseEnclosure(child, numFmt);
-                        break;
-                    case "itemGuid":
-                        item.ItemGuid = child.InnerText;
-                        break;
-                    case "publishDate":
-                        item.PublishDate = DateTimeOffset.Parse(child.InnerText, dateFmt);
-                        break;
-                    case "source":
-                        if (child.HasAttribute("url"))
-                        {
-                            item.Source = new FeedItemSource()
+                    switch (child.Name)
+                    {
+                        case "title":
+                            item.Title = child.InnerText;
+                            logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(item.Title), item.Title);
+                            break;
+                        case "link":
+                            item.Link = child.InnerText;
+                            logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(item.Link), item.Link);
+                            break;
+                        case "description":
+                            item.Description = child.InnerText;
+                            logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(item.Description), item.Description);
+                            break;
+                        case "author":
+                            item.Author = new FeedPerson() { EmailAddress = child.InnerText };
+                            logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(item.Author), item.Author);
+                            break;
+                        case "category":
+                            item.Categories.Add(child.InnerText);
+                            break;
+                        case "comments":
+                            item.Comments = child.InnerText;
+                            logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(item.Comments), item.Comments);
+                            break;
+                        case "enclosure":
+                            item.Enclosure = ParseEnclosure(child, numFmt);
+                            break;
+                        case "itemGuid":
+                            item.ItemGuid = child.InnerText;
+                            logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(item.ItemGuid), item.ItemGuid);
+                            break;
+                        case "publishDate":
+                            item.PublishDate = DateTimeOffset.Parse(child.InnerText, dateFmt);
+                            logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(item.PublishDate), item.PublishDate);
+                            break;
+                        case "source":
+                            if (child.HasAttribute("url"))
                             {
-                                Name = child.InnerText,
-                                Url = child.GetAttribute("url"),
-                            };
-                        }
+                                item.Source = new FeedItemSource()
+                                {
+                                    Name = child.InnerText,
+                                    Url = child.GetAttribute("url"),
+                                };
 
-                        break;
+                                logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(item.Source), item.Source);
+                            }
+                            else
+                            {
+                                logger.LogDebug(Properties.Resources.FeedParser_Logger_SourceUrlMissing, child);
+                            }
+
+                            break;
+                    }
                 }
-            }
 
-            return item;
+                return item;
+            }
         }
 
         private static FeedItemEnclosure ParseEnclosure(XmlElement el, NumberFormatInfo fmt)

@@ -132,4 +132,49 @@
   <data name="ErrorMessage_NonRssRootString" xml:space="preserve">
     <value>Root node is not &lt;rss&gt;</value>
   </data>
+  <data name="FeedParser_Logger_AttemptXmlParsing" xml:space="preserve">
+    <value>Attempting to parse into xml: {RssFeed}</value>
+  </data>
+  <data name="FeedParser_Logger_BasicSet" xml:space="preserve">
+    <value>Assigning {ElementName} value of {Value}</value>
+  </data>
+  <data name="FeedParser_Logger_BeginParsing" xml:space="preserve">
+    <value>Begin parsing feed</value>
+  </data>
+  <data name="FeedParser_Logger_CurrentElement" xml:space="preserve">
+    <value>Currently parsing {Element}</value>
+  </data>
+  <data name="FeedParser_Logger_EmptyString" xml:space="preserve">
+    <value>Unable to parse feed - passed string is empty / only whitespace</value>
+  </data>
+  <data name="FeedParser_Logger_GetRootElement" xml:space="preserve">
+    <value>Accessing root element {Root} of parsed xml document</value>
+  </data>
+  <data name="FeedParser_Logger_ListItemAdded" xml:space="preserve">
+    <value>Added {Value} to {ListName} list</value>
+  </data>
+  <data name="FeedParser_Logger_MissingChannel" xml:space="preserve">
+    <value>&lt;channel&gt; element is missing</value>
+  </data>
+  <data name="FeedParser_Logger_NonRssRootElement" xml:space="preserve">
+    <value>Encountered non-rss root element: {RootName}</value>
+  </data>
+  <data name="FeedParser_Logger_NullString" xml:space="preserve">
+    <value>Unable to parse feed - passed string is null</value>
+  </data>
+  <data name="FeedParser_Logger_SourceUrlMissing" xml:space="preserve">
+    <value>Could not parse Source from {Element} because of missing url attribute</value>
+  </data>
+  <data name="FeedParser_Logger_TryParseFailed" xml:space="preserve">
+    <value>Failed parsing {Value} into {Type} for {Property}</value>
+  </data>
+  <data name="FeedParser_Logger_UnknownRssVersion" xml:space="preserve">
+    <value>Encountered unknown rss version: {RssVersion}</value>
+  </data>
+  <data name="FeedParser_Logger_XmlParsed" xml:space="preserve">
+    <value>Successfully parsed string into xml: {XmlDoc}</value>
+  </data>
+  <data name="FeedParser_Logger_XmlParseFailed" xml:space="preserve">
+    <value>Encountered exception while parsing feed string {FeedString} into xml document: {Exception}</value>
+  </data>
 </root>

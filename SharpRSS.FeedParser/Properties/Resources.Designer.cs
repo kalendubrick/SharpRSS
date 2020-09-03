@@ -104,5 +104,140 @@ namespace SharpRSS.FeedParser.Properties {
                 return ResourceManager.GetString("ErrorMessage_NonRssRootString", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attempting to parse into xml: {RssFeed}.
+        /// </summary>
+        internal static string FeedParser_Logger_AttemptXmlParsing {
+            get {
+                return ResourceManager.GetString("FeedParser_Logger_AttemptXmlParsing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assigning {ElementName} value of {Value}.
+        /// </summary>
+        internal static string FeedParser_Logger_BasicSet {
+            get {
+                return ResourceManager.GetString("FeedParser_Logger_BasicSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Begin parsing feed.
+        /// </summary>
+        internal static string FeedParser_Logger_BeginParsing {
+            get {
+                return ResourceManager.GetString("FeedParser_Logger_BeginParsing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Currently parsing {Element}.
+        /// </summary>
+        internal static string FeedParser_Logger_CurrentElement {
+            get {
+                return ResourceManager.GetString("FeedParser_Logger_CurrentElement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to parse feed - passed string is empty / only whitespace.
+        /// </summary>
+        internal static string FeedParser_Logger_EmptyString {
+            get {
+                return ResourceManager.GetString("FeedParser_Logger_EmptyString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Accessing root element {Root} of parsed xml document.
+        /// </summary>
+        internal static string FeedParser_Logger_GetRootElement {
+            get {
+                return ResourceManager.GetString("FeedParser_Logger_GetRootElement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Added {Value} to {ListName} list.
+        /// </summary>
+        internal static string FeedParser_Logger_ListItemAdded {
+            get {
+                return ResourceManager.GetString("FeedParser_Logger_ListItemAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;channel&gt; element is missing.
+        /// </summary>
+        internal static string FeedParser_Logger_MissingChannel {
+            get {
+                return ResourceManager.GetString("FeedParser_Logger_MissingChannel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Encountered non-rss root element: {RootName}.
+        /// </summary>
+        internal static string FeedParser_Logger_NonRssRootElement {
+            get {
+                return ResourceManager.GetString("FeedParser_Logger_NonRssRootElement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to parse feed - passed string is null.
+        /// </summary>
+        internal static string FeedParser_Logger_NullString {
+            get {
+                return ResourceManager.GetString("FeedParser_Logger_NullString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not parse Source from {Element} because of missing url attribute.
+        /// </summary>
+        internal static string FeedParser_Logger_SourceUrlMissing {
+            get {
+                return ResourceManager.GetString("FeedParser_Logger_SourceUrlMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed parsing {Value} into {Type} for {Property}.
+        /// </summary>
+        internal static string FeedParser_Logger_TryParseFailed {
+            get {
+                return ResourceManager.GetString("FeedParser_Logger_TryParseFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Encountered unknown rss version: {RssVersion}.
+        /// </summary>
+        internal static string FeedParser_Logger_UnknownRssVersion {
+            get {
+                return ResourceManager.GetString("FeedParser_Logger_UnknownRssVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully parsed string into xml: {XmlDoc}.
+        /// </summary>
+        internal static string FeedParser_Logger_XmlParsed {
+            get {
+                return ResourceManager.GetString("FeedParser_Logger_XmlParsed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Encountered exception while parsing feed string {FeedString} into xml document: {Exception}.
+        /// </summary>
+        internal static string FeedParser_Logger_XmlParseFailed {
+            get {
+                return ResourceManager.GetString("FeedParser_Logger_XmlParseFailed", resourceCulture);
+            }
+        }
     }
 }
