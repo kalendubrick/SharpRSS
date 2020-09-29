@@ -310,29 +310,57 @@ namespace SharpRSS.FeedParser
             }
         }
 
-        private static FeedItemEnclosure ParseEnclosure(XmlElement el, NumberFormatInfo fmt)
+        private FeedItemEnclosure ParseEnclosure(XmlElement el, NumberFormatInfo fmt)
         {
             var enclosure = new FeedItemEnclosure();
 
-            if (el.HasAttribute("url"))
+            using (logger.BeginScope(el))
             {
-                enclosure.Url = el.GetAttribute("url");
-            }
-
-            if (el.HasAttribute("length"))
-            {
-                try
+                if (el.HasAttribute("url"))
                 {
-                    enclosure.Length = long.Parse(el.GetAttribute("length"), fmt);
+                    enclosure.Url = el.GetAttribute("url");
+                    logger.LogDebug(
+                        Properties.Resources.FeedParser_Logger_BasicSet,
+                        nameof(enclosure.Url),
+                        enclosure.Url);
                 }
-                catch (FormatException)
-                {
-                }
-            }
 
-            if (el.HasAttribute("mimeType"))
-            {
-                enclosure.MimeType = el.GetAttribute("mimeType");
+                if (el.HasAttribute("length"))
+                {
+                    try
+                    {
+                        enclosure.Length = long.Parse(el.GetAttribute("length"), fmt);
+                        logger.LogDebug(
+                            Properties.Resources.FeedParser_Logger_BasicSet,
+                            nameof(enclosure.Length),
+                            enclosure.Length);
+                    }
+                    catch (FormatException)
+                    {
+                        logger.LogDebug(
+                            Properties.Resources.FeedParser_Logger_TryParseFailed,
+                            enclosure.Length,
+                            typeof(long),
+                            nameof(enclosure.Length));
+                    }
+                    catch (OverflowException)
+                    {
+                        logger.LogDebug(
+                            Properties.Resources.FeedParser_Logger_TryParseFailed,
+                            enclosure.Length,
+                            typeof(long),
+                            nameof(enclosure.Length));
+                    }
+                }
+
+                if (el.HasAttribute("mimeType"))
+                {
+                    enclosure.MimeType = el.GetAttribute("mimeType");
+                    logger.LogDebug(
+                        Properties.Resources.FeedParser_Logger_BasicSet,
+                        nameof(enclosure.MimeType),
+                        enclosure.MimeType);
+                }
             }
 
             return enclosure;
