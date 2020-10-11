@@ -480,40 +480,67 @@ namespace SharpRSS.FeedParser
             return feedCloud;
         }
 
-        private static FeedImage ParseImage(XmlElement el)
+        private FeedImage ParseImage(XmlElement el)
         {
             var feedImage = new FeedImage();
 
-            foreach (XmlElement child in el.ChildNodes)
+            using (logger.BeginScope(el))
             {
-                switch (child.Name)
+                foreach (XmlElement child in el.ChildNodes)
                 {
-                    case "url":
-                        feedImage.Url = child.InnerText;
-                        break;
-                    case "title":
-                        feedImage.Title = child.InnerText;
-                        break;
-                    case "link":
-                        feedImage.Link = child.InnerText;
-                        break;
-                    case "description":
-                        feedImage.Description = child.InnerText;
-                        break;
-                    case "height":
-                        if (int.TryParse(child.InnerText, out var height))
-                        {
-                            feedImage.Height = height;
-                        }
+                    switch (child.Name)
+                    {
+                        case "url":
+                            feedImage.Url = child.InnerText;
+                            break;
+                        case "title":
+                            feedImage.Title = child.InnerText;
+                            break;
+                        case "link":
+                            feedImage.Link = child.InnerText;
+                            break;
+                        case "description":
+                            feedImage.Description = child.InnerText;
+                            break;
+                        case "height":
+                            try
+                            {
+                                feedImage.Height = int.Parse(child.InnerText);
+                                logger.LogDebug(
+                                    Properties.Resources.FeedParser_Logger_BasicSet,
+                                    nameof(feedImage.Height),
+                                    feedImage.Height);
+                            }
+                            catch (FormatException)
+                            {
+                                logger.LogDebug(
+                                    Properties.Resources.FeedParser_Logger_TryParseFailed,
+                                    feedImage.Height,
+                                    typeof(int),
+                                    nameof(feedImage.Height));
+                            }
 
-                        break;
-                    case "width":
-                        if (int.TryParse(child.InnerText, out var width))
-                        {
-                            feedImage.Width = width;
-                        }
+                            break;
+                        case "width":
+                            try
+                            {
+                                feedImage.Width = int.Parse(child.InnerText);
+                                logger.LogDebug(
+                                    Properties.Resources.FeedParser_Logger_BasicSet,
+                                    nameof(feedImage.Width),
+                                    feedImage.Width);
+                            }
+                            catch (FormatException)
+                            {
+                                logger.LogDebug(
+                                    Properties.Resources.FeedParser_Logger_TryParseFailed,
+                                    feedImage.Width,
+                                    typeof(int),
+                                    nameof(feedImage.Width));
+                            }
 
-                        break;
+                            break;
+                    }
                 }
             }
 
