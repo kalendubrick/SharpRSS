@@ -411,37 +411,69 @@ namespace SharpRSS.FeedParser
             return textInput;
         }
 
-        private static FeedCloud ParseCloud(XmlElement el, NumberFormatInfo fmt)
+        private FeedCloud ParseCloud(XmlElement el, NumberFormatInfo fmt)
         {
             var feedCloud = new FeedCloud();
 
-            foreach (XmlAttribute attr in el.Attributes)
+            using (logger.BeginScope(el))
             {
-                switch (attr.Name)
+                foreach (XmlAttribute attr in el.Attributes)
                 {
-                    case "domain":
-                        feedCloud.Domain = attr.Value;
-                        break;
-                    case "port":
-                        try
-                        {
-                            feedCloud.Port = int.Parse(attr.Value, fmt);
-                        }
-                        catch (FormatException)
-                        {
-                            feedCloud.Port = 0;
-                        }
+                    switch (attr.Name)
+                    {
+                        case "domain":
+                            feedCloud.Domain = attr.Value;
+                            logger.LogDebug(
+                                Properties.Resources.FeedParser_Logger_BasicSet,
+                                nameof(feedCloud.Domain),
+                                feedCloud.Domain);
+                            break;
+                        case "port":
+                            try
+                            {
+                                feedCloud.Port = int.Parse(attr.Value, fmt);
+                                logger.LogDebug(
+                                    Properties.Resources.FeedParser_Logger_BasicSet,
+                                    nameof(feedCloud.Port),
+                                    feedCloud.Port);
+                            }
+                            catch (FormatException)
+                            {
+                                feedCloud.Port = 0;
+                                logger.LogDebug(
+                                    Properties.Resources.FeedParser_Logger_TryParseFailed,
+                                    feedCloud.Port,
+                                    typeof(int),
+                                    nameof(feedCloud.Port));
+                                logger.LogDebug(
+                                    Properties.Resources.FeedParser_Logger_BasicSet,
+                                    nameof(feedCloud.Port),
+                                    feedCloud.Port);
+                            }
 
-                        break;
-                    case "path":
-                        feedCloud.Path = attr.Value;
-                        break;
-                    case "registerProcedure":
-                        feedCloud.RegisterProcedure = attr.Value;
-                        break;
-                    case "protocol":
-                        feedCloud.Protocol = attr.Value;
-                        break;
+                            break;
+                        case "path":
+                            feedCloud.Path = attr.Value;
+                            logger.LogDebug(
+                                Properties.Resources.FeedParser_Logger_BasicSet,
+                                nameof(feedCloud.Path),
+                                feedCloud.Path);
+                            break;
+                        case "registerProcedure":
+                            feedCloud.RegisterProcedure = attr.Value;
+                            logger.LogDebug(
+                                Properties.Resources.FeedParser_Logger_BasicSet,
+                                nameof(feedCloud.RegisterProcedure),
+                                feedCloud.RegisterProcedure);
+                            break;
+                        case "protocol":
+                            feedCloud.Protocol = attr.Value;
+                            logger.LogDebug(
+                                Properties.Resources.FeedParser_Logger_BasicSet,
+                                nameof(feedCloud.Protocol),
+                                feedCloud.Protocol);
+                            break;
+                    }
                 }
             }
 
