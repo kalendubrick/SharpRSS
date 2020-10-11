@@ -366,26 +366,45 @@ namespace SharpRSS.FeedParser
             return enclosure;
         }
 
-        private static FeedTextInput ParseTextInput(XmlElement el)
+        private FeedTextInput ParseTextInput(XmlElement el)
         {
             var textInput = new FeedTextInput();
 
-            foreach (XmlAttribute attr in el.Attributes)
+            using (logger.BeginScope(el))
             {
-                switch (attr.Name)
+                foreach (XmlAttribute attr in el.Attributes)
                 {
-                    case "title":
-                        textInput.Title = el.InnerText;
-                        break;
-                    case "description":
-                        textInput.Description = el.InnerText;
-                        break;
-                    case "name":
-                        textInput.Name = el.InnerText;
-                        break;
-                    case "link":
-                        textInput.Link = el.InnerText;
-                        break;
+                    switch (attr.Name)
+                    {
+                        case "title":
+                            textInput.Title = el.InnerText;
+                            logger.LogDebug(
+                                Properties.Resources.FeedParser_Logger_BasicSet,
+                                nameof(textInput.Title),
+                                textInput.Title);
+                            break;
+                        case "description":
+                            textInput.Description = el.InnerText;
+                            logger.LogDebug(
+                                Properties.Resources.FeedParser_Logger_BasicSet,
+                                nameof(textInput.Description),
+                                textInput.Description);
+                            break;
+                        case "name":
+                            textInput.Name = el.InnerText;
+                            logger.LogDebug(
+                                Properties.Resources.FeedParser_Logger_BasicSet,
+                                nameof(textInput.Name),
+                                textInput.Name);
+                            break;
+                        case "link":
+                            textInput.Link = el.InnerText;
+                            logger.LogDebug(
+                                Properties.Resources.FeedParser_Logger_BasicSet,
+                                nameof(textInput.Link),
+                                textInput.Link);
+                            break;
+                    }
                 }
             }
 
