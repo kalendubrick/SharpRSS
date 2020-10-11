@@ -492,15 +492,31 @@ namespace SharpRSS.FeedParser
                     {
                         case "url":
                             feedImage.Url = child.InnerText;
+                            logger.LogDebug(
+                                Properties.Resources.FeedParser_Logger_BasicSet,
+                                nameof(feedImage.Url),
+                                feedImage.Url);
                             break;
                         case "title":
                             feedImage.Title = child.InnerText;
+                            logger.LogDebug(
+                                Properties.Resources.FeedParser_Logger_BasicSet,
+                                nameof(feedImage.Title),
+                                feedImage.Title);
                             break;
                         case "link":
                             feedImage.Link = child.InnerText;
+                            logger.LogDebug(
+                                Properties.Resources.FeedParser_Logger_BasicSet,
+                                nameof(feedImage.Link),
+                                feedImage.Link);
                             break;
                         case "description":
                             feedImage.Description = child.InnerText;
+                            logger.LogDebug(
+                                Properties.Resources.FeedParser_Logger_BasicSet,
+                                nameof(feedImage.Description),
+                                feedImage.Description);
                             break;
                         case "height":
                             try
