@@ -1,4 +1,4 @@
-// <copyright file="FeedParser.cs" company="Kalen Dubrick">
+﻿// <copyright file="FeedParser.cs" company="Kalen Dubrick">
 // Copyright (c) Kalen Dubrick. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -236,7 +236,16 @@ namespace SharpRSS.FeedParser
 
                         break;
                     case "item":
-                        var item = ParseItem(child);
+                        FeedItem item;
+
+                        if (!string.IsNullOrWhiteSpace(feed.Language))
+                        {
+                            item = ParseItem(child, feed.Language);
+                        }
+                        else
+                        {
+                            item = ParseItem(child);
+                        }
 
                         feed.Items.Add(item);
                         logger.LogDebug(Properties.Resources.FeedParser_Logger_ListItemAdded, item, nameof(feed.Items));
