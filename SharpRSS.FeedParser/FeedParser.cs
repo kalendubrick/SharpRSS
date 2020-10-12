@@ -183,7 +183,12 @@ namespace SharpRSS.FeedParser
 
                         break;
                     case "image":
-                        feed.Image = ParseImage(child);
+                        if (!string.IsNullOrWhiteSpace(feed.Language))
+                        {
+                            numFmt = new CultureInfo(feed.Language).NumberFormat;
+                        }
+
+                        feed.Image = ParseImage(child, numFmt);
                         logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.Image), feed.Image);
                         break;
                     case "textInput":
@@ -413,7 +418,6 @@ namespace SharpRSS.FeedParser
             return textInput;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1101:Prefix local calls with this", Justification = "<Pending>")]
         private FeedCloud ParseCloud(XmlElement el, NumberFormatInfo fmt)
         {
             var feedCloud = new FeedCloud();
@@ -483,7 +487,7 @@ namespace SharpRSS.FeedParser
             return feedCloud;
         }
 
-        private FeedImage ParseImage(XmlElement el)
+        private FeedImage ParseImage(XmlElement el, IFormatProvider fmt)
         {
             var feedImage = new FeedImage();
 
@@ -524,7 +528,7 @@ namespace SharpRSS.FeedParser
                         case "height":
                             try
                             {
-                                feedImage.Height = int.Parse(child.InnerText);
+                                feedImage.Height = int.Parse(child.InnerText, fmt);
                                 logger.LogDebug(
                                     Properties.Resources.FeedParser_Logger_BasicSet,
                                     nameof(feedImage.Height),
@@ -543,7 +547,7 @@ namespace SharpRSS.FeedParser
                         case "width":
                             try
                             {
-                                feedImage.Width = int.Parse(child.InnerText);
+                                feedImage.Width = int.Parse(child.InnerText, fmt);
                                 logger.LogDebug(
                                     Properties.Resources.FeedParser_Logger_BasicSet,
                                     nameof(feedImage.Width),
