@@ -6,6 +6,7 @@
 namespace SharpRSS.FeedParser
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Runtime.CompilerServices;
     using System.Xml;
@@ -15,6 +16,7 @@ namespace SharpRSS.FeedParser
     /// <summary>
     /// Parses XML into a <see cref="Feed"/> object.
     /// </summary>
+    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1101:Prefix local calls with this", Justification = "References to logger are clear")]
     public class FeedParser
     {
         private readonly ILogger logger;
@@ -411,6 +413,7 @@ namespace SharpRSS.FeedParser
             return textInput;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1101:Prefix local calls with this", Justification = "<Pending>")]
         private FeedCloud ParseCloud(XmlElement el, NumberFormatInfo fmt)
         {
             var feedCloud = new FeedCloud();
