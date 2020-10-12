@@ -50,34 +50,51 @@ namespace SharpRSS.FeedParser
             if (string.IsNullOrWhiteSpace(rssFeed))
             {
                 logger.LogDebug(Properties.Resources.FeedParser_Logger_EmptyString);
-                throw new ArgumentException(Properties.Resources.ErrorMessage_EmptyFeedString, nameof(rssFeed));
+                throw new ArgumentException(
+                    Properties.Resources.ErrorMessage_EmptyFeedString,
+                    nameof(rssFeed));
             }
 
             try
             {
-                logger.LogDebug(Properties.Resources.FeedParser_Logger_AttemptXmlParsing, rssFeed);
+                logger.LogDebug(
+                    Properties.Resources.FeedParser_Logger_AttemptXmlParsing,
+                    rssFeed);
                 xmlDoc.LoadXml(rssFeed);
-                logger.LogDebug(Properties.Resources.FeedParser_Logger_XmlParsed, xmlDoc);
+                logger.LogDebug(
+                    Properties.Resources.FeedParser_Logger_XmlParsed,
+                    xmlDoc);
             }
             catch (XmlException e)
             {
-                logger.LogDebug(Properties.Resources.FeedParser_Logger_XmlParseFailed, rssFeed, e);
-                throw new FormatException(Properties.Resources.ErrorMessage_InvalidXmlString, e);
+                logger.LogDebug(
+                    Properties.Resources.FeedParser_Logger_XmlParseFailed,
+                    rssFeed,
+                    e);
+                throw new FormatException(
+                    Properties.Resources.ErrorMessage_InvalidXmlString,
+                    e);
             }
 
             var root = xmlDoc.DocumentElement;
-            logger.LogDebug(Properties.Resources.FeedParser_Logger_GetRootElement, root);
+            logger.LogDebug(
+                Properties.Resources.FeedParser_Logger_GetRootElement,
+                root);
 
             if (!string.Equals(root.Name, "rss", StringComparison.OrdinalIgnoreCase))
             {
-                logger.LogDebug(Properties.Resources.FeedParser_Logger_NonRssRootElement, root.Name);
+                logger.LogDebug(
+                    Properties.Resources.FeedParser_Logger_NonRssRootElement,
+                    root.Name);
                 throw new FormatException(Properties.Resources.ErrorMessage_NonRssRootString);
             }
 
             if (root.HasAttribute("version") &&
                 !string.Equals(root.GetAttribute("version"), "2.0", StringComparison.OrdinalIgnoreCase))
             {
-                logger.LogDebug(Properties.Resources.FeedParser_Logger_UnknownRssVersion, root.GetAttribute("version"));
+                logger.LogDebug(
+                    Properties.Resources.FeedParser_Logger_UnknownRssVersion,
+                    root.GetAttribute("version"));
                 throw new FormatException(Properties.Resources.ErrorMessage_NonRss2RootString);
             }
 
@@ -101,31 +118,58 @@ namespace SharpRSS.FeedParser
                 {
                     case "title":
                         feed.Title = child.InnerText;
-                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.Title), feed.Title);
+                        logger.LogDebug(
+                            Properties.Resources.FeedParser_Logger_BasicSet,
+                            nameof(feed.Title),
+                            feed.Title);
                         break;
                     case "link":
                         feed.Link = child.InnerText;
-                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.Link), feed.Link);
+                        logger.LogDebug(
+                            Properties.Resources.FeedParser_Logger_BasicSet,
+                            nameof(feed.Link),
+                            feed.Link);
                         break;
                     case "description":
                         feed.Description = child.InnerText;
-                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.Description), feed.Description);
+                        logger.LogDebug(
+                            Properties.Resources.FeedParser_Logger_BasicSet,
+                            nameof(feed.Description),
+                            feed.Description);
                         break;
                     case "language":
                         feed.Language = child.InnerText;
-                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.Language), feed.Language);
+                        logger.LogDebug(
+                            Properties.Resources.FeedParser_Logger_BasicSet,
+                            nameof(feed.Language),
+                            feed.Language);
                         break;
                     case "copyright":
                         feed.Copyright = child.InnerText;
-                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.Copyright), feed.Copyright);
+                        logger.LogDebug(
+                            Properties.Resources.FeedParser_Logger_BasicSet,
+                            nameof(feed.Copyright),
+                            feed.Copyright);
                         break;
                     case "managingEditor":
-                        feed.ManagingEditor = new FeedPerson() { EmailAddress = child.InnerText };
-                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.ManagingEditor), feed.ManagingEditor);
+                        feed.ManagingEditor = new FeedPerson
+                        {
+                            EmailAddress = child.InnerText,
+                        };
+                        logger.LogDebug(
+                            Properties.Resources.FeedParser_Logger_BasicSet,
+                            nameof(feed.ManagingEditor),
+                            feed.ManagingEditor);
                         break;
                     case "webmaster":
-                        feed.Webmaster = new FeedPerson() { EmailAddress = child.InnerText };
-                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.Webmaster), feed.Webmaster);
+                        feed.Webmaster = new FeedPerson
+                        {
+                            EmailAddress = child.InnerText,
+                        };
+                        logger.LogDebug(
+                            Properties.Resources.FeedParser_Logger_BasicSet,
+                            nameof(feed.Webmaster),
+                            feed.Webmaster);
                         break;
                     case "publishDate":
                         if (!string.IsNullOrWhiteSpace(feed.Language))
@@ -134,7 +178,10 @@ namespace SharpRSS.FeedParser
                         }
 
                         feed.PublishDate = DateTimeOffset.Parse(child.InnerText, dateFmt);
-                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.PublishDate), feed.PublishDate);
+                        logger.LogDebug(
+                            Properties.Resources.FeedParser_Logger_BasicSet,
+                            nameof(feed.PublishDate),
+                            feed.PublishDate);
                         break;
                     case "lastBuildDate":
                         if (!string.IsNullOrWhiteSpace(feed.Language))
@@ -143,19 +190,31 @@ namespace SharpRSS.FeedParser
                         }
 
                         feed.LastBuildDate = DateTimeOffset.Parse(child.InnerText, dateFmt);
-                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.LastBuildDate), feed.LastBuildDate);
+                        logger.LogDebug(
+                            Properties.Resources.FeedParser_Logger_BasicSet,
+                            nameof(feed.LastBuildDate),
+                            feed.LastBuildDate);
                         break;
                     case "category":
                         feed.Categories.Add(child.InnerText);
-                        logger.LogDebug(Properties.Resources.FeedParser_Logger_ListItemAdded, child.InnerText, nameof(feed.Categories));
+                        logger.LogDebug(
+                            Properties.Resources.FeedParser_Logger_ListItemAdded,
+                            child.InnerText,
+                            nameof(feed.Categories));
                         break;
                     case "generator":
                         feed.Generator = child.InnerText;
-                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.Generator), feed.Generator);
+                        logger.LogDebug(
+                            Properties.Resources.FeedParser_Logger_BasicSet,
+                            nameof(feed.Generator),
+                            feed.Generator);
                         break;
                     case "docs":
                         feed.Docs = child.InnerText;
-                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.Docs), feed.Docs);
+                        logger.LogDebug(
+                            Properties.Resources.FeedParser_Logger_BasicSet,
+                            nameof(feed.Docs),
+                            feed.Docs);
                         break;
                     case "cloud":
                         if (!string.IsNullOrWhiteSpace(feed.Language))
@@ -164,13 +223,19 @@ namespace SharpRSS.FeedParser
                         }
 
                         feed.Cloud = ParseCloud(child, numFmt);
-                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.Cloud), feed.Cloud);
+                        logger.LogDebug(
+                            Properties.Resources.FeedParser_Logger_BasicSet,
+                            nameof(feed.Cloud),
+                            feed.Cloud);
                         break;
                     case "ttl":
                         if (int.TryParse(child.InnerText, out var ttl))
                         {
                             feed.TimeToLive = ttl;
-                            logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.TimeToLive), feed.TimeToLive);
+                            logger.LogDebug(
+                                Properties.Resources.FeedParser_Logger_BasicSet,
+                                nameof(feed.TimeToLive),
+                                feed.TimeToLive);
                         }
                         else
                         {
@@ -189,11 +254,17 @@ namespace SharpRSS.FeedParser
                         }
 
                         feed.Image = ParseImage(child, numFmt);
-                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.Image), feed.Image);
+                        logger.LogDebug(
+                            Properties.Resources.FeedParser_Logger_BasicSet,
+                            nameof(feed.Image),
+                            feed.Image);
                         break;
                     case "textInput":
                         feed.TextInput = ParseTextInput(child);
-                        logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(feed.TextInput), feed.TextInput);
+                        logger.LogDebug(
+                            Properties.Resources.FeedParser_Logger_BasicSet,
+                            nameof(feed.TextInput),
+                            feed.TextInput);
                         break;
                     case "skipHours":
                         if (!string.IsNullOrWhiteSpace(feed.Language))
@@ -206,7 +277,10 @@ namespace SharpRSS.FeedParser
                             try
                             {
                                 feed.SkipHours.Add(int.Parse(hour.InnerText, numFmt));
-                                logger.LogDebug(Properties.Resources.FeedParser_Logger_ListItemAdded, child.InnerText, nameof(feed.SkipHours));
+                                logger.LogDebug(
+                                    Properties.Resources.FeedParser_Logger_ListItemAdded,
+                                    child.InnerText,
+                                    nameof(feed.SkipHours));
                             }
                             catch (FormatException)
                             {
@@ -231,7 +305,10 @@ namespace SharpRSS.FeedParser
                         foreach (XmlElement day in child.ChildNodes)
                         {
                             feed.SkipDays.Add(day.InnerText);
-                            logger.LogDebug(Properties.Resources.FeedParser_Logger_ListItemAdded, child.InnerText, nameof(feed.SkipDays));
+                            logger.LogDebug(
+                                Properties.Resources.FeedParser_Logger_ListItemAdded,
+                                child.InnerText,
+                                nameof(feed.SkipDays));
                         }
 
                         break;
@@ -248,7 +325,10 @@ namespace SharpRSS.FeedParser
                         }
 
                         feed.Items.Add(item);
-                        logger.LogDebug(Properties.Resources.FeedParser_Logger_ListItemAdded, item, nameof(feed.Items));
+                        logger.LogDebug(
+                            Properties.Resources.FeedParser_Logger_ListItemAdded,
+                            item,
+                            nameof(feed.Items));
                         break;
                 }
             }
@@ -270,52 +350,81 @@ namespace SharpRSS.FeedParser
                     {
                         case "title":
                             item.Title = child.InnerText;
-                            logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(item.Title), item.Title);
+                            logger.LogDebug(
+                                Properties.Resources.FeedParser_Logger_BasicSet,
+                                nameof(item.Title),
+                                item.Title);
                             break;
                         case "link":
                             item.Link = child.InnerText;
-                            logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(item.Link), item.Link);
+                            logger.LogDebug(
+                                Properties.Resources.FeedParser_Logger_BasicSet,
+                                nameof(item.Link),
+                                item.Link);
                             break;
                         case "description":
                             item.Description = child.InnerText;
-                            logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(item.Description), item.Description);
+                            logger.LogDebug(
+                                Properties.Resources.FeedParser_Logger_BasicSet,
+                                nameof(item.Description),
+                                item.Description);
                             break;
                         case "author":
-                            item.Author = new FeedPerson() { EmailAddress = child.InnerText };
-                            logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(item.Author), item.Author);
+                            item.Author = new FeedPerson
+                            {
+                                EmailAddress = child.InnerText,
+                            };
+                            logger.LogDebug(
+                                Properties.Resources.FeedParser_Logger_BasicSet,
+                                nameof(item.Author),
+                                item.Author);
                             break;
                         case "category":
                             item.Categories.Add(child.InnerText);
                             break;
                         case "comments":
                             item.Comments = child.InnerText;
-                            logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(item.Comments), item.Comments);
+                            logger.LogDebug(
+                                Properties.Resources.FeedParser_Logger_BasicSet,
+                                nameof(item.Comments),
+                                item.Comments);
                             break;
                         case "enclosure":
                             item.Enclosure = ParseEnclosure(child, numFmt);
                             break;
                         case "itemGuid":
                             item.ItemGuid = child.InnerText;
-                            logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(item.ItemGuid), item.ItemGuid);
+                            logger.LogDebug(
+                                Properties.Resources.FeedParser_Logger_BasicSet,
+                                nameof(item.ItemGuid),
+                                item.ItemGuid);
                             break;
                         case "publishDate":
                             item.PublishDate = DateTimeOffset.Parse(child.InnerText, dateFmt);
-                            logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(item.PublishDate), item.PublishDate);
+                            logger.LogDebug(
+                                Properties.Resources.FeedParser_Logger_BasicSet,
+                                nameof(item.PublishDate),
+                                item.PublishDate);
                             break;
                         case "source":
                             if (child.HasAttribute("url"))
                             {
-                                item.Source = new FeedItemSource()
+                                item.Source = new FeedItemSource
                                 {
                                     Name = child.InnerText,
                                     Url = child.GetAttribute("url"),
                                 };
 
-                                logger.LogDebug(Properties.Resources.FeedParser_Logger_BasicSet, nameof(item.Source), item.Source);
+                                logger.LogDebug(
+                                    Properties.Resources.FeedParser_Logger_BasicSet,
+                                    nameof(item.Source),
+                                    item.Source);
                             }
                             else
                             {
-                                logger.LogDebug(Properties.Resources.FeedParser_Logger_SourceUrlMissing, child);
+                                logger.LogDebug(
+                                    Properties.Resources.FeedParser_Logger_SourceUrlMissing,
+                                    child);
                             }
 
                             break;
