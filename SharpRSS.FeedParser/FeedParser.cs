@@ -1,4 +1,4 @@
-﻿// <copyright file="FeedParser.cs" company="Kalen Dubrick">
+// <copyright file="FeedParser.cs" company="Kalen Dubrick">
 // Copyright (c) Kalen Dubrick. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -317,7 +317,7 @@ namespace SharpRSS.FeedParser
             }
         }
 
-        private FeedItemEnclosure ParseEnclosure(XmlElement el, NumberFormatInfo fmt)
+        private FeedItemEnclosure ParseEnclosure(XmlElement el, IFormatProvider fmt)
         {
             var enclosure = new FeedItemEnclosure();
 
@@ -418,7 +418,7 @@ namespace SharpRSS.FeedParser
             return textInput;
         }
 
-        private FeedCloud ParseCloud(XmlElement el, NumberFormatInfo fmt)
+        private FeedCloud ParseCloud(XmlElement el, IFormatProvider fmt)
         {
             var feedCloud = new FeedCloud();
 
